@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Distribución de Frecuencia y Medidas Estadísticas</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    input[type="number"] { width: 80px; margin: 2px; }
+    table { border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #000; padding: 5px; text-align: center; }
+    canvas { margin-top: 30px; border: 1px solid #000; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+</head>
+<body>
+  <h2>📊 Ceremonia de Distribución de Frecuencia</h2>
+  <p>Ingresa hasta 50 datos numéricos:</p>
+  <div id="datos"></div>
+  <button onclick="calcular()">Calcular tabla y medidas</button>
+  <div id="resultado"></div>
+
+  <script>
+    // Crear campos de entrada
+    let contenedor = document.getElementById("datos");
+    for (let i = 0; i < 50; i++) {
+      contenedor.innerHTML += `<input type="number" id="dato${i}">`;
+      if ((i + 1) % 10 === 0) contenedor.innerHTML += "<br>";
+    }
+
+    function calcular() {
+      let datos = [];
+      for (let i = 0; i < 50; i++) {
+        let val = parseFloat(document.getElementById("dato" + i).value);
+        if (!isNaN(val)) datos.push(val);
+      }
+
+      if (datos.length < 2) {
+        document.getElementById("resultado").innerHTML = "<p>⚠️ Ingresa al menos dos datos.</p>";
+        return;
+      }
+
+      datos.sort((a, b) => a - b);
+      const n = datos.length;
+      const min = datos[0];
+      const max = datos[n - 1];
+      const rango = max - min;
+      const k = Math.ceil(1 + Math.log2(n));
+      const amplitud = Math.ceil(rango / k);
+
+      let resultado = `<h3>📐 Cálculos previos:</h3>`;
+      resultado += `<p>\\[ \\text{Mínimo} = ${min} \\quad \\text{Máximo} = ${max} \\]</p>`;
+      resultado += `<p>\\[ R = ${max} - ${min} = ${rango.toFixed(2)} \\]</p>`;
+      resultado += `<p>\\[ k = 1 + \\log_2(${n}) = ${k} \\]</p>`;
+      resultado += `<p>\\[ A = \\frac{${rango.toFixed(2)}}{${k}} = ${amplitud} \\]</p>`;
+
+      let tabla = `<h3>📊 Tabla de distribución de frecuencia:</h3>`;
+      tabla += `<table><tr><th>Clase</th><th>Límite inferior</th><th>Límite superior</th><th>Marca</th><th>f</th><th>fᵣ</th><th>F</th></tr>`;
+
+      let li = min;
+      let frecuenciaAcumulada = 0;
+      let marcas = [], frecuencias = [];
+
+      for (let i = 0; i < k; i++) {
+        let ls = li + amplitud;
+        let marca = (li + ls) / 2;
+        let frecuencia = datos.filter(x => x >= li && x < ls).length;
+        if (i === k - 1) frecuencia += datos.filter(x => x === ls).length;
+        frecuenciaAcumulada += frecuencia;
+        let fr = (frecuencia / n * 100).toFixed(2);
+
+        tabla += `<tr>
+          <td>${i + 1}</td>
+          <td>${li.toFixed(2)}</td>
+          <td>${ls.toFixed(2)}</td>
+          <td>${marca.toFixed(2)}</td>
+          <td>${frecuencia}</td>
+          <td>${fr}%</td>
+          <td>${frecuenciaAcumulada}</td>
+        </tr>`;
+
+        marcas.push(marca);
+        frecuencias.push(frecuencia);
+        li = ls;
+      }
+
+      resultado += tabla;
+
+      // Media
+      const sumaFx = marcas.reduce((acc, xi, i) => acc + xi * frecuencias[i], 0);
+      const media = sumaFx / n;
+      resultado += `<h3>📐 Media agrupada:</h3>`;
+      resultado += `<p>\\[ \\bar{x} = \\frac{\\sum f_i x_i}{n} = \\frac{${sumaFx.toFixed(2)}}{${n}} = ${media.toFixed(2)} \\]</p>`;
+
+      // Moda
+      let fMax = Math.max(...frecuencias);
+      let modalIndex = frecuencias.indexOf(fMax);
+      let L = min + modalIndex * amplitud;
+      let f1 = frecuencias[modalIndex];
+      let f0 = frecuencias[modalIndex - 1] || 0;
+      let f2 = frecuencias[modalIndex + 1] || 0;
+      let moda = L + ((f1 - f0) / (2 * f1 - f0 - f2)) * amplitud;
+      resultado += `<h3>📐 Moda agrupada:</h3>`;
+      resultado += `<p>\\[ \\text{Moda} = ${L.toFixed(2)} + \\left( \\frac{${f1} - ${f0}}{2 \\cdot ${f1} - ${f0} - ${f2}} \\right) \\cdot ${amplitud} = ${moda.toFixed(2)} \\]</p>`;
+
+      // Mediana
+      let F = 0, medianaIndex = 0;
+      for (let i = 0; i < k; i++) {
+        F += frecuencias[i];
+        if (F >= n / 2) {
+          medianaIndex = i;
+          break;
+        }
+      }
+      let Lm = min + medianaIndex * amplitud;
+      let F0 = frecuencias.slice(0, medianaIndex).reduce((a, b) => a + b, 0);
+      let fm = frecuencias[medianaIndex];
+      let mediana = Lm + ((n / 2 - F0) / fm) * amplitud;
+      resultado += `<h3>📐 Mediana agrupada:</h3>`;
+      resultado += `<p>\\[ \\text{Mediana} = ${Lm.toFixed(2)} + \\left( \\frac{${(n/2).toFixed(2)} - ${F0}}{${fm}} \\right) \\cdot ${amplitud} = ${mediana.toFixed(2)} \\]</p>`;
+
+      // Varianza y desviación
+      const sumaFx2 = marcas.reduce((acc, xi, i) => acc + frecuencias[i] * Math.pow(xi - media, 2), 0);
+      const varianza = sumaFx2 / n;
+      const desviacion = Math.sqrt(varianza);
+      resultado += `<h3>📐 Varianza y desviación estándar:</h3>`;
+      resultado += `<p>\\[ \\sigma^2 = \\frac{${sumaFx2.toFixed(2)}}{${n}} = ${varianza.toFixed(2)} \\]</p>`;
+      resultado += `<p>\\[ \\sigma = \\sqrt{${varianza.toFixed(2)}} = ${desviacion.toFixed(2)} \\]</p>`;
+
+      // Canvas
+      resultado += `<h3>📈 Histograma y Polígono de Frecuencia:</h3>`;
+      resultado += `<canvas id="grafico" width="600" height="400"></canvas>`;
+      document.getElementById("resultado").innerHTML = resultado;
+      MathJax.typeset();
+
+      // Dibujo
+      const canvas = document.getElementById("grafico");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const margen = 50;
+      const alturaCanvas = canvas.height - margen * 2;
+      const anchoCanvas = canvas.width - margen * 2;
+      const anchoBarra = anchoCanvas / k;
+      const escalaY = alturaCanvas / Math.max(...frecuencias);
+
+      // Ejes
+      ctx.beginPath();
+      ctx.moveTo(margen, margen);
+      ctx.lineTo(margen, canvas.height - margen);
+      ctx.lineTo(canvas.width - margen, canvas.height - margen);
+      ctx.stroke();
+    
+      // Histograma
+      for (let i = 0; i < k; i++) {
+        const x = margen + i * anchoBarra;
+        const y = canvas.height - margen - frecuencias[i] * escalaY;
+        const altura = frecuencias[i] * escalaY;
+
+        ctx.fillStyle = "#4A90E2";
+        ctx.fillRect(x, y, anchoBarra - 4, altura);
+
+        // Etiqueta de frecuencia
+        ctx.fillStyle = "black";
+        ctx.fillText(frecuencias[i], x + anchoBarra / 4, y - 5);
+      }
+
+      // Polígono de frecuencia
+      ctx.beginPath();
+      ctx.strokeStyle = "#E94E77";
+      ctx.lineWidth = 2;
+      for (let i = 0; i < k; i++) {
+        const x = margen + i * anchoBarra + anchoBarra / 2;
+        const y = canvas.height - margen - frecuencias[i] * escalaY;
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Etiquetas de clases
+      ctx.fillStyle = "black";
+      ctx.font = "12px Arial";
+      for (let i = 0; i < k; i++) {
+        const x = margen + i * anchoBarra;
+        const etiqueta = `${(min + i * amplitud).toFixed(1)}-${(min + (i + 1) * amplitud).toFixed(1)}`;
+        ctx.fillText(etiqueta, x + 2, canvas.height - margen + 15);
+      }
+    }
+  </script>
+</body>
+</html>

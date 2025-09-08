@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ritual de Trinomio Cuadrado Perfecto</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; }
+    h1 { color: #4e342e; }
+    .paso { background: #e3f2fd; border-left: 5px solid #1e88e5; padding: 10px; margin: 10px 0; }
+    input[type="text"], input[type="number"] { width: 60px; margin-right: 10px; }
+    button { background: #1e88e5; color: white; border: none; padding: 10px 15px; cursor: pointer; }
+    button:hover { background: #1565c0; }
+    #resultado { margin-top: 20px; background: #fff8e1; border-left: 5px solid #ffb300; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>🧮 Ritual Multivariable de Trinomio Cuadrado Perfecto</h1>
+
+<p><strong>Primer término:</strong></p>
+Coef: <input type="number" id="a" value="16">
+Var1: <input type="text" id="var1a" value="x"> Exp1: <input type="number" id="exp1a" value="4">
+Var2: <input type="text" id="var2a" value="y"> Exp2: <input type="number" id="exp2a" value="2">
+
+<p><strong>Segundo término:</strong></p>
+Coef: <input type="number" id="b" value="80">
+Var1: <input type="text" id="var1b" value="x"> Exp1: <input type="number" id="exp1b" value="2">
+Var2: <input type="text" id="var2b" value="y"> Exp2: <input type="number" id="exp2b" value="1">
+
+<p><strong>Tercer término:</strong></p>
+Coef: <input type="number" id="c" value="25">
+Var1: <input type="text" id="var1c" value="x"> Exp1: <input type="number" id="exp1c" value="0">
+Var2: <input type="text" id="var2c" value="y"> Exp2: <input type="number" id="exp2c" value="0">
+<button onclick="resolver()">Resolver</button>
+
+<div id="resultado"></div>
+
+<script>
+function construirTermino(coef, var1, exp1, var2, exp2) {
+  let termino = coef.toString();
+  if (var1 && exp1 !== 0) {
+    termino += var1 + "^{" + exp1 + "}";
+  }
+  if (var2 && exp2 !== 0) {
+    termino += var2 + "^{" + exp2 + "}";
+  }
+  return termino;
+}
+
+function construirRaiz(coef, var1, exp1, var2, exp2) {
+  const raiz = Math.sqrt(coef);
+  let termino = raiz.toString();
+  if (var1 && exp1 !== 0) {
+    termino += var1 + "^{" + (exp1 / 2) + "}";
+  }
+  if (var2 && exp2 !== 0) {
+    termino += var2 + "^{" + (exp2 / 2) + "}";
+  }
+  return { coef: raiz, simbolo: termino, exp1: exp1 / 2, exp2: exp2 / 2 };
+}
+
+function resolver() {
+  const a = parseFloat(document.getElementById('a').value);
+  const b = parseFloat(document.getElementById('b').value);
+  const c = parseFloat(document.getElementById('c').value);
+
+  const var1a = document.getElementById('var1a').value;
+  const exp1a = parseInt(document.getElementById('exp1a').value);
+  const var2a = document.getElementById('var2a').value;
+  const exp2a = parseInt(document.getElementById('exp2a').value);
+
+  const var1b = document.getElementById('var1b').value;
+  const exp1b = parseInt(document.getElementById('exp1b').value);
+  const var2b = document.getElementById('var2b').value;
+  const exp2b = parseInt(document.getElementById('exp2b').value);
+
+  const var1c = document.getElementById('var1c').value;
+  const exp1c = parseInt(document.getElementById('exp1c').value);
+  const var2c = document.getElementById('var2c').value;
+  const exp2c = parseInt(document.getElementById('exp2c').value);
+
+  const raizA = construirRaiz(a, var1a, exp1a, var2a, exp2a);
+  const raizC = construirRaiz(c, var1c, exp1c, var2c, exp2c);
+
+  const productoCoef = 2 * raizA.coef * raizC.coef;
+
+  // Suma de exponentes para variables compartidas
+  const exp1Total = (var1a === var1c && var1a) ? raizA.exp1 + raizC.exp1 : '';
+  const exp2Total = (var2a === var2c && var2a) ? raizA.exp2 + raizC.exp2 : '';
+
+  let variablesProducto = '';
+  if (var1a === var1c && var1a && exp1Total !== 0) {
+    variablesProducto += var1a + "^{" + exp1Total + "}";
+  }
+  if (var2a === var2c && var2a && exp2Total !== 0) {
+    variablesProducto += var2a + "^{" + exp2Total + "}";
+  }
+
+  const termino1 = construirTermino(a, var1a, exp1a, var2a, exp2a);
+  const termino2 = construirTermino(b, var1b, exp1b, var2b, exp2b);
+  const termino3 = construirTermino(c, var1c, exp1c, var2c, exp2c);
+
+  let pasos = '';
+  pasos += `<div class="paso">🔹 Paso 1: Trinomio supuesto → \\(${termino1} + ${termino2} + ${termino3}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 2: Raíz del primer término → \\(${raizA.simbolo}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 3: Raíz del tercer término → \\(${raizC.simbolo}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 4: Verificamos: \\(2 \\cdot ${raizA.coef} \\cdot ${raizC.coef} = ${productoCoef}\\)</div>`;
+  if (variablesProducto) {
+    pasos += `<div class="paso">🔹 Variables del término medio esperado: \\(${variablesProducto}\\)</div>`;
+  }
+
+  const terminoMedioEsperado = construirTermino(productoCoef, var1a === var1c ? var1a : '', exp1Total || 0, var2a === var2c ? var2a : '', exp2Total || 0);
+  const terminoMedioReal = construirTermino(b, var1b, exp1b, var2b, exp2b);
+
+  if (productoCoef === b && terminoMedioEsperado === terminoMedioReal) {
+    pasos += `<div class="paso">✅ Coincide con el segundo término → ¡Es un trinomio cuadrado perfecto!</div>`;
+    pasos += `<div class="paso">🎉 Factorización: \\((${raizA.simbolo} + ${raizC.simbolo})^2\\)</div>`;
+  } else {
+    pasos += `<div class="paso">❌ No coincide con el segundo término → No es un trinomio cuadrado perfecto.</div>`;
+  }
+
+  document.getElementById('resultado').innerHTML = pasos;
+  MathJax.typeset(); // Actualiza las fórmulas con MathJax
+}
+</script>
+
+</body>
+</html>

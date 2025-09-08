@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Producto de Binomios con Término Común</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; }
+    h1 { color: #4e342e; }
+    .paso { background: #e3f2fd; border-left: 5px solid #1e88e5; padding: 10px; margin: 10px 0; }
+    input[type="text"], input[type="number"] { width: 60px; margin-right: 10px; }
+    button { background: #1e88e5; color: white; border: none; padding: 10px 15px; cursor: pointer; }
+    button:hover { background: #1565c0; }
+    #resultado { margin-top: 20px; background: #fff8e1; border-left: 5px solid #ffb300; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>🧮 Producto de Binomios con Término Común</h1>
+
+<p><strong>Término común:</strong></p>
+Coef: <input type="number" id="a" value="1">
+Var: <input type="text" id="varA" value="a">
+
+<p><strong>Término no común 1:</strong></p>
+Coef: <input type="number" id="b" value="2">
+Var: <input type="text" id="varB" value="b">
+
+<p><strong>Término no común 2:</strong></p>
+Coef: <input type="number" id="c" value="3">
+Var: <input type="text" id="varC" value="c">
+
+<button onclick="expandir()">Expandir</button>
+
+<div id="resultado"></div>
+
+<script>
+function construirTermino(coef, variable, exponente = 1) {
+  if (!variable) return coef.toString();
+  return coef.toString() + variable + (exponente !== 1 ? "^{" + exponente + "}" : "");
+}
+
+function expandir() {
+  const a = parseFloat(document.getElementById('a').value);
+  const varA = document.getElementById('varA').value;
+
+  const b = parseFloat(document.getElementById('b').value);
+  const varB = document.getElementById('varB').value;
+
+  const c = parseFloat(document.getElementById('c').value);
+  const varC = document.getElementById('varC').value;
+
+  const aTerm = construirTermino(a, varA);
+  const bTerm = construirTermino(b, varB);
+  const cTerm = construirTermino(c, varC);
+
+  const binomioVisual = `(${aTerm} + ${bTerm})(${aTerm} + ${cTerm})`;
+
+  const paso1 = a * a;
+  const paso2 = a * (b + c);
+  const paso3 = b * c;
+
+  const aCuadrado = construirTermino(paso1, varA, 2);
+  const sumaNoComunes = construirTermino(paso2, varA);
+  const productoNoComunes = construirTermino(paso3, varB + varC);
+
+  let pasos = '';
+  pasos += `<div class="paso">🔰 Binomio ingresado: \\(${binomioVisual}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 1: Cuadrado del término común → \\(${aTerm}^2 = ${aCuadrado}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 2: Suma de no comunes multiplicada por el común → \\(${a}(${b} + ${c}) = ${sumaNoComunes}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 3: Producto de los no comunes → \\(${b} \\cdot ${c} = ${productoNoComunes}\\)</div>`;
+
+  const resultado = `\\(${aCuadrado} + ${sumaNoComunes} + ${productoNoComunes}\\)`;
+  pasos += `<div class="paso">🎉 Resultado expandido: ${resultado}</div>`;
+
+  document.getElementById('resultado').innerHTML = pasos;
+  MathJax.typeset();
+}
+</script>
+
+</body>
+</html>

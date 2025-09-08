@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Producto Notable: Cuadrado de un Binomio</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; }
+    h1 { color: #4e342e; }
+    .paso { background: #e3f2fd; border-left: 5px solid #1e88e5; padding: 10px; margin: 10px 0; }
+    input[type="text"], input[type="number"] { width: 60px; margin-right: 10px; }
+    button { background: #1e88e5; color: white; border: none; padding: 10px 15px; cursor: pointer; }
+    button:hover { background: #1565c0; }
+    #resultado { margin-top: 20px; background: #fff8e1; border-left: 5px solid #ffb300; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>🧮 Producto Notable: Cuadrado de un Binomio</h1>
+
+<p><strong>Primer término:</strong></p>
+Signo: <input type="text" id="signo1" value="+">
+Coef: <input type="number" id="a" value="2">
+Var1: <input type="text" id="var1a" value="x"> Exp1: <input type="number" id="exp1a" value="3">
+Var2: <input type="text" id="var2a" value="y"> Exp2: <input type="number" id="exp2a" value="1">
+
+<p><strong>Segundo término:</strong></p>
+Signo: <input type="text" id="signo2" value="-">
+Coef: <input type="number" id="b" value="5">
+Var1: <input type="text" id="var1b" value="x"> Exp1: <input type="number" id="exp1b" value="2">
+Var2: <input type="text" id="var2b" value=""> Exp2: <input type="number" id="exp2b" value="0">
+
+<button onclick="expandir()">Expandir</button>
+
+<div id="resultado"></div>
+
+<script>
+function construirTermino(signo, coef, var1, exp1, var2, exp2) {
+  let t = (signo === "-" ? "-" : "") + coef.toString();
+  if (var1 && exp1 !== 0) t += var1 + "^{" + exp1 + "}";
+  if (var2 && exp2 !== 0) t += var2 + "^{" + exp2 + "}";
+  return t;
+}
+
+function construirVariablesMultiplicadas(v1a, e1a, v2a, e2a, v1b, e1b, v2b, e2b) {
+  let vars = {};
+  if (v1a) vars[v1a] = (vars[v1a] || 0) + e1a;
+  if (v2a) vars[v2a] = (vars[v2a] || 0) + e2a;
+  if (v1b) vars[v1b] = (vars[v1b] || 0) + e1b;
+  if (v2b) vars[v2b] = (vars[v2b] || 0) + e2b;
+
+  let resultado = "";
+  for (let v in vars) {
+    if (vars[v] !== 0) resultado += v + "^{" + vars[v] + "}";
+  }
+  return resultado;
+}
+
+function construirVariablesCuadradas(var1, exp1, var2, exp2) {
+  let resultado = "";
+  if (var1 && exp1 !== 0) resultado += var1 + "^{" + (exp1 * 2) + "}";
+  if (var2 && exp2 !== 0) resultado += var2 + "^{" + (exp2 * 2) + "}";
+  return resultado;
+}
+
+function signoProducto(s1, s2) {
+  s1 = s1 === "-" ? "-" : "+";
+  s2 = s2 === "-" ? "-" : "+";
+  return (s1 === s2) ? "+" : "−";
+}
+
+function expandir() {
+  const signo1 = document.getElementById('signo1').value.trim() || "+";
+  const a = parseFloat(document.getElementById('a').value);
+  const var1a = document.getElementById('var1a').value;
+  const exp1a = parseInt(document.getElementById('exp1a').value);
+  const var2a = document.getElementById('var2a').value;
+  const exp2a = parseInt(document.getElementById('exp2a').value);
+
+  const signo2 = document.getElementById('signo2').value.trim() || "+";
+  const b = parseFloat(document.getElementById('b').value);
+  const var1b = document.getElementById('var1b').value;
+  const exp1b = parseInt(document.getElementById('exp1b').value);
+  const var2b = document.getElementById('var2b').value;
+  const exp2b = parseInt(document.getElementById('exp2b').value);
+
+  const signoSimplificado = signoProducto(signo1, signo2);
+
+  const aTerm = construirTermino(signo1, a, var1a, exp1a, var2a, exp2a);
+  const bTerm = construirTermino(signo2, b, var1b, exp1b, var2b, exp2b);
+
+  const paso1 = a * a;
+  const paso2 = 2 * a * b;
+  const paso3 = b * b;
+
+  const varAcuad = construirVariablesCuadradas(var1a, exp1a, var2a, exp2a);
+  const varBcuad = construirVariablesCuadradas(var1b, exp1b, var2b, exp2b);
+  const varAB = construirVariablesMultiplicadas(var1a, exp1a, var2a, exp2a, var1b, exp1b, var2b, exp2b);
+
+  let pasos = '';
+  pasos += `<div class="paso">🔰 Binomio ingresado: \\((${aTerm} ${bTerm})^2\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 1: Cuadrado del primero → \\(${a}^2 = ${paso1}\\), variables: \\(${varAcuad}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 2: Doble producto → \\(2 \\cdot ${a} \\cdot ${b} = ${paso2}\\), variables: \\(${varAB}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 3: Cuadrado del segundo → \\(${b}^2 = ${paso3}\\), variables: \\(${varBcuad}\\)</div>`;
+
+  const resultado = `\\(${paso1}${varAcuad} ${signoSimplificado} ${paso2}${varAB} + ${paso3}${varBcuad}\\)`;
+  pasos += `<div class="paso">🎉 Resultado expandido: ${resultado}</div>`;
+
+  document.getElementById('resultado').innerHTML = pasos;
+  MathJax.typeset();
+}
+</script>
+
+</body>
+</html>

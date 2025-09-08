@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ritual de Igualación - Sistema de Ecuaciones</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      color: #6a1b9a;
+    }
+    label, input {
+      margin: 5px;
+    }
+    .paso {
+      background-color: #ede7f6;
+      border-left: 5px solid #6a1b9a;
+      padding: 10px;
+      margin-top: 15px;
+    }
+    .celebracion {
+      background-color: #ffcc80;
+      border-left: 5px solid #ef6c00;
+      padding: 10px;
+      font-weight: bold;
+    }
+    canvas {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎓 Ritual de Igualación</h1>
+  <p>Ingresa los coeficientes de tu sistema:</p>
+
+  <div>
+    <label>Ecuación 1: </label>
+    <input type="number" id="a1" placeholder="a₁ (x)"> +
+    <input type="number" id="b1" placeholder="b₁ (y)"> =
+    <input type="number" id="c1" placeholder="c₁">
+  </div>
+
+  <div>
+    <label>Ecuación 2: </label>
+    <input type="number" id="a2" placeholder="a₂ (x)"> +
+    <input type="number" id="b2" placeholder="b₂ (y)"> =
+    <input type="number" id="c2" placeholder="c₂">
+  </div>
+
+  <button onclick="resolver()">✨ Resolver por igualación</button>
+
+  <div id="sistema"></div>
+  <div id="resultado"></div>
+  <canvas id="grafico" width="400" height="400"></canvas>
+
+  <script>
+    function resolver() {
+      const a1 = parseFloat(document.getElementById("a1").value);
+      const b1 = parseFloat(document.getElementById("b1").value);
+      const c1 = parseFloat(document.getElementById("c1").value);
+      const a2 = parseFloat(document.getElementById("a2").value);
+      const b2 = parseFloat(document.getElementById("b2").value);
+      const c2 = parseFloat(document.getElementById("c2").value);
+
+      let html = "";
+
+      // Paso 0: Sistema armado
+      html += `<div class="paso">🌱 Sistema armado:<br>
+      \\[
+      \\begin{cases}
+      ${a1}x + ${b1}y = ${c1} \\\\
+      ${a2}x + ${b2}y = ${c2}
+      \\end{cases}
+      \\]</div>`;
+
+      // Paso 1: Despeje de x en ambas ecuaciones
+      html += `<div class="paso">🔍 Paso 1: Despejamos x<br>
+      \\[
+      x = \\frac{${c1} - ${b1}y}{${a1}}, \\quad
+      x = \\frac{${c2} - ${b2}y}{${a2}}
+      \\]</div>`;
+
+      // Paso 2: Igualamos ambas expresiones
+      html += `<div class="paso">⚖️ Paso 2: Igualamos ambas expresiones<br>
+      \\[
+      \\frac{${c1} - ${b1}y}{${a1}} = \\frac{${c2} - ${b2}y}{${a2}}
+      \\]</div>`;
+
+      // Paso 3: Agrupamos términos
+      const coefY = -b1 * a2 + b2 * a1;
+      const constY = c2 * a1 - c1 * a2;
+      html += `<div class="paso">🧮 Paso 3: Agrupamos términos<br>
+      \\[
+      ${coefY}y = ${constY}
+      \\]</div>`;
+
+      // Paso 4: Despeje de y
+      const y = constY / coefY;
+      html += `<div class="paso">📤 Paso 4: Despejamos y<br>
+      \\[
+      y = ${y.toFixed(3)}
+      \\]</div>`;
+
+      // Paso 5: Sustituimos en uno de los despejes
+      const x = (c1 - b1 * y) / a1;
+      html += `<div class="paso">🔄 Paso 5: Sustituimos y en el despeje de x<br>
+      \\[
+      x = ${x.toFixed(3)}
+      \\]</div>`;
+
+      // Solución final
+      html += `<div class="celebracion">🎊 Solución final:<br>
+      \\[
+      x = ${x.toFixed(3)}, \\quad y = ${y.toFixed(3)}
+      \\]</div>`;
+
+      document.getElementById("resultado").innerHTML = html;
+      MathJax.typeset();
+
+      // Graficación
+      const canvas = document.getElementById("grafico");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Ejes
+      ctx.beginPath();
+      ctx.moveTo(200, 0);
+      ctx.lineTo(200, 400);
+      ctx.moveTo(0, 200);
+      ctx.lineTo(400, 200);
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Marcas y etiquetas
+      ctx.font = "10px Segoe UI";
+      ctx.fillStyle = "#333";
+      for (let i = -9; i <= 9; i++) {
+        if (i !== 0) {
+          ctx.beginPath();
+          ctx.moveTo(200 + i * 20, 195);
+          ctx.lineTo(200 + i * 20, 205);
+          ctx.stroke();
+          ctx.fillText(i, 200 + i * 20 - 5, 215);
+
+          ctx.beginPath();
+          ctx.moveTo(195, 200 - i * 20);
+          ctx.lineTo(205, 200 - i * 20);
+          ctx.stroke();
+          ctx.fillText(i, 180, 200 - i * 20 + 3);
+        }
+      }
+
+      ctx.font = "12px Segoe UI";
+      ctx.fillText("x", 390, 215);
+      ctx.fillText("y", 210, 10);
+
+      function dibujarRecta(a, b, c, color) {
+        const x1 = -10, x2 = 10;
+        const y1 = (c - a * x1) / b;
+        const y2 = (c - a * x2) / b;
+
+        ctx.beginPath();
+        ctx.moveTo(200 + x1 * 20, 200 - y1 * 20);
+        ctx.lineTo(200 + x2 * 20, 200 - y2 * 20);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      dibujarRecta(a1, b1, c1, "#6a1b9a");
+      dibujarRecta(a2, b2, c2, "#ef6c00");
+
+      ctx.beginPath();
+      ctx.arc(200 + x * 20, 200 - y * 20, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "#d32f2f";
+      ctx.fill();
+      ctx.font = "14px Segoe UI";
+      ctx.fillText(`(${x.toFixed(2)}, ${y.toFixed(2)})`, 200 + x * 20 + 5, 200 - y * 20 - 5);
+    }
+  </script>
+
+</body>
+</html>

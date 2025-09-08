@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ceremonia de MRUV Encadenado</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    input { width: 80px; margin: 5px; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 5px; text-align: center; }
+    canvas { border: 1px solid #000; margin-top: 20px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+</head>
+<body>
+  <h2>⚡ Ceremonia de MRUV Encadenado por Tramos</h2>
+  <p>Ingresa los datos disponibles por tramo (deja vacío el último si es reposo):</p>
+  <table border="1">
+    <tr>
+      <th>Tramo</th><th>v₀ (m/s)</th><th>a (m/s²)</th><th>t (s)</th><th>d (m)</th><th>v_f (m/s)</th>
+    </tr>
+    <script>
+      for (let i = 1; i <= 4; i++) {
+        document.write(`<tr>
+          <td>${i}</td>
+          <td><input type="number" id="v0${i}"></td>
+          <td><input type="number" id="a${i}"></td>
+          <td><input type="number" id="t${i}"></td>
+          <td><input type="number" id="d${i}"></td>
+          <td><input type="number" id="vf${i}"></td>
+        </tr>`);
+      }
+    </script>
+  </table>
+  <br>
+  <button onclick="calcular()">Calcular y graficar</button>
+  <div id="resultado" style="margin-top:20px;"></div>
+  <canvas id="grafico" width="900" height="300"></canvas>
+
+  <script>
+    function calcular() {
+      let totalDistancia = 0;
+      let totalTiempo = 0;
+      let resultado = "<h3>📐 Cálculos por tramo:</h3>";
+      const tramos = [];
+      let v0Global = null;
+
+      for (let i = 1; i <= 4; i++) {
+        let v0 = parseFloat(document.getElementById("v0" + i).value);
+        let a = parseFloat(document.getElementById("a" + i).value);
+        let t = parseFloat(document.getElementById("t" + i).value);
+        let d = parseFloat(document.getElementById("d" + i).value);
+        let vf = parseFloat(document.getElementById("vf" + i).value);
+
+        if (isNaN(v0) && v0Global !== null) v0 = v0Global;
+        let tramo = `<strong>Tramo ${i}:</strong><br>`;
+        let usado = "";
+
+        if (!isNaN(v0) && !isNaN(a) && !isNaN(t)) {
+          d = v0 * t + 0.5 * a * t * t;
+          vf = v0 + a * t;
+          usado = `\\[ d = v_0 t + \\frac{1}{2} a t^2 = ${v0} \\cdot ${t} + \\frac{1}{2} \\cdot ${a} \\cdot ${t}^2 = ${d.toFixed(2)} \\text{ m} \\]<br>`;
+          usado += `\\[ v_f = v_0 + a t = ${v0} + ${a} \\cdot ${t} = ${vf.toFixed(2)} \\text{ m/s} \\]`;
+        } else if (!isNaN(v0) && !isNaN(vf) && !isNaN(a)) {
+          d = (vf * vf - v0 * v0) / (2 * a);
+          t = (vf - v0) / a;
+          usado = `\\[ d = \\frac{v_f^2 - v_0^2}{2a} = \\frac{${vf}^2 - ${v0}^2}{2 \\cdot ${a}} = ${d.toFixed(2)} \\text{ m} \\]<br>`;
+          usado += `\\[ t = \\frac{v_f - v_0}{a} = \\frac{${vf} - ${v0}}{${a}} = ${t.toFixed(2)} \\text{ s} \\]`;
+        } else if (!isNaN(v0) && !isNaN(d) && !isNaN(a)) {
+          vf = Math.sqrt(v0 * v0 + 2 * a * d);
+          t = (vf - v0) / a;
+          usado = `\\[ v_f = \\sqrt{v_0^2 + 2ad} = \\sqrt{${v0}^2 + 2 \\cdot ${a} \\cdot ${d}} = ${vf.toFixed(2)} \\text{ m/s} \\]<br>`;
+          usado += `\\[ t = \\frac{v_f - v_0}{a} = \\frac{${vf.toFixed(2)} - ${v0}}{${a}} = ${t.toFixed(2)} \\text{ s} \\]`;
+        } else {
+          tramo += `⚠️ Datos insuficientes para calcular este tramo.<br><br>`;
+          resultado += tramo;
+          continue;
+        }
+
+        totalDistancia += d;
+        totalTiempo += t;
+        v0Global = vf;
+        tramos.push({ v0, a, t, d, vf });
+        tramo += usado + "<br><br>";
+        resultado += tramo;
+      }
+
+      let vMedia = totalDistancia / totalTiempo;
+      resultado += `<h3>📊 Resultados finales:</h3>`;
+      resultado += `\\[ \\text{Distancia total} = ${totalDistancia.toFixed(2)} \\text{ m} \\]<br>`;
+      resultado += `\\[ \\text{Tiempo total} = ${totalTiempo.toFixed(2)} \\text{ s} \\]<br>`;
+      resultado += `\\[ v_{\\text{media}} = \\frac{${totalDistancia.toFixed(2)}}{${totalTiempo.toFixed(2)}} = ${vMedia.toFixed(2)} \\text{ m/s} \\]`;
+
+      document.getElementById("resultado").innerHTML = resultado;
+      MathJax.typeset();
+
+      // Gráfico velocidad vs tiempo
+      const canvas = document.getElementById("grafico");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "12px Arial";
+
+      let x = 50;
+      let yBase = 250;
+      let escalaT = 30;
+      let escalaV = 5;
+
+      // Ejes
+      ctx.beginPath();
+      ctx.moveTo(40, 20);
+      ctx.lineTo(40, yBase); // eje vertical
+      ctx.lineTo(canvas.width - 20, yBase); // eje horizontal
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillText("Velocidad (m/s)", 10, 20);
+      ctx.fillText("Tiempo (s)", canvas.width - 100, yBase + 15);
+
+      // Gráfico por tramos
+      ctx.beginPath();
+      ctx.moveTo(x, yBase - tramos[0].v0 * escalaV);
+      tramos.forEach((tramo, i) => {
+        let tPix = tramo.t * escalaT;
+        let vPix = tramo.vf * escalaV;
+        ctx.lineTo(x + tPix, yBase - vPix);
+        ctx.fillText(`Tramo ${i + 1}`, x + 5, yBase - vPix - 10);
+        ctx.fillText(`v₀=${tramo.v0.toFixed(1)} m/s`, x + 5, yBase - vPix + 15);
+        ctx.fillText(`v_f=${tramo.vf.toFixed(1)} m/s`, x + 5, yBase - vPix + 30);
+        x += tPix;
+      });
+      ctx.strokeStyle = "blue";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  </script>
+</body>
+</html>

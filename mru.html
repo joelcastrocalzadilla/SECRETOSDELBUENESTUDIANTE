@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ceremonia de MRU por Tramos</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    input { width: 80px; margin: 5px; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 5px; text-align: center; }
+    canvas { border: 1px solid #000; margin-top: 20px; }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+</head>
+<body>
+  <h2>🚀 Ceremonia de MRU por Tramos</h2>
+  <p>Ingresa los datos de cada tramo (deja uno vacío si quieres que se calcule):</p>
+  <table border="1">
+    <tr><th>Tramo</th><th>Velocidad (m/s)</th><th>Tiempo (s)</th><th>Distancia (m)</th></tr>
+    <script>
+      for (let i = 1; i <= 3; i++) {
+        document.write(`<tr>
+          <td>${i}</td>
+          <td><input type="number" id="v${i}"></td>
+          <td><input type="number" id="t${i}"></td>
+          <td><input type="number" id="d${i}"></td>
+        </tr>`);
+      }
+    </script>
+  </table>
+  <br>
+  <button onclick="calcular()">Calcular recorrido</button>
+  <div id="resultado" style="margin-top:20px;"></div>
+  <canvas id="recorrido" width="800" height="150"></canvas>
+
+  <script>
+    function calcular() {
+      let totalDistancia = 0;
+      let totalTiempo = 0;
+      let resultado = "<h3>📐 Cálculos por tramo:</h3>";
+
+      const tramos = [];
+
+      for (let i = 1; i <= 3; i++) {
+        let v = parseFloat(document.getElementById("v" + i).value);
+        let t = parseFloat(document.getElementById("t" + i).value);
+        let d = parseFloat(document.getElementById("d" + i).value);
+
+        let tramo = `<strong>Tramo ${i}:</strong><br>`;
+
+        if (!isNaN(v) && !isNaN(t)) {
+          d = v * t;
+          tramo += `\\[ d = v \\cdot t = ${v} \\cdot ${t} = ${d.toFixed(2)} \\text{ m} \\]<br>`;
+        } else if (!isNaN(d) && !isNaN(v)) {
+          t = d / v;
+          tramo += `\\[ t = \\frac{d}{v} = \\frac{${d}}{${v}} = ${t.toFixed(2)} \\text{ s} \\]<br>`;
+        } else if (!isNaN(d) && !isNaN(t)) {
+          v = d / t;
+          tramo += `\\[ v = \\frac{d}{t} = \\frac{${d}}{${t}} = ${v.toFixed(2)} \\text{ m/s} \\]<br>`;
+        } else {
+          tramo += `⚠️ Datos insuficientes para calcular este tramo.<br>`;
+          resultado += tramo + "<br>";
+          continue;
+        }
+
+        totalDistancia += d;
+        totalTiempo += t;
+        tramos.push({ v, t, d });
+        resultado += tramo + "<br>";
+      }
+
+      let vMedia = totalDistancia / totalTiempo;
+      resultado += `<h3>📊 Resultados finales:</h3>`;
+      resultado += `\\[ \\text{Distancia total} = ${totalDistancia.toFixed(2)} \\text{ m} \\]<br>`;
+      resultado += `\\[ \\text{Tiempo total} = ${totalTiempo.toFixed(2)} \\text{ s} \\]<br>`;
+      resultado += `\\[ v_{\\text{media}} = \\frac{${totalDistancia.toFixed(2)}}{${totalTiempo.toFixed(2)}} = ${vMedia.toFixed(2)} \\text{ m/s} \\]`;
+
+      document.getElementById("resultado").innerHTML = resultado;
+      MathJax.typeset();
+
+      // Dibujo ritualizado
+      const canvas = document.getElementById("recorrido");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "12px Arial";
+
+      let x = 20;
+      let y = 40;
+
+      tramos.forEach((tramo, i) => {
+        const largo = tramo.d * 2; // escala visual
+        ctx.fillStyle = "#4A90E2";
+        ctx.fillRect(x, y, largo, 20);
+
+        ctx.fillStyle = "black";
+        ctx.fillText(`Tramo ${i + 1}`, x + 5, y - 10);
+        ctx.fillText(`v = ${tramo.v.toFixed(2)} m/s`, x + 5, y + 10);
+        ctx.fillText(`t = ${tramo.t.toFixed(2)} s`, x + 5, y + 25);
+        ctx.fillText(`d = ${tramo.d.toFixed(2)} m`, x + 5, y + 40);
+
+        ctx.beginPath();
+        ctx.moveTo(x, y + 60);
+        ctx.lineTo(x + largo, y + 60);
+        ctx.strokeStyle = "gray";
+        ctx.stroke();
+
+        x += largo + 30;
+      });
+
+      ctx.fillStyle = "green";
+      ctx.fillText(`Distancia total: ${totalDistancia.toFixed(2)} m`, 20, y + 80);
+      ctx.fillText(`Velocidad media: ${vMedia.toFixed(2)} m/s`, 20, y + 95);
+    }
+  </script>
+</body>
+</html>

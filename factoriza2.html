@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ritual del Cubo Perfecto</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; }
+    h1 { color: #4e342e; }
+    .paso { background: #e3f2fd; border-left: 5px solid #1e88e5; padding: 10px; margin: 10px 0; }
+    input[type="text"], input[type="number"] { width: 60px; margin-right: 10px; }
+    button { background: #1e88e5; color: white; border: none; padding: 10px 15px; cursor: pointer; }
+    button:hover { background: #1565c0; }
+    #resultado { margin-top: 20px; background: #fff8e1; border-left: 5px solid #ffb300; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>🧮 Ritual del Cubo Perfecto de un Binomio</h1>
+
+<p><strong>Primer término (\\( a^3 \\)):</strong></p>
+Coef: <input type="number" id="a" value="8">
+Var1: <input type="text" id="var1a" value="x"> Exp1: <input type="number" id="exp1a" value="3">
+Var2: <input type="text" id="var2a" value=""> Exp2: <input type="number" id="exp2a" value="0">
+
+<p><strong>Segundo término (\\( 3a^2b \\)):</strong></p>
+Coef: <input type="number" id="b1" value="12">
+Var1: <input type="text" id="var1b" value="x"> Exp1: <input type="number" id="exp1b" value="2">
+Var2: <input type="text" id="var2b" value="y"> Exp2: <input type="number" id="exp2b" value="1">
+
+<p><strong>Tercer término (\\( 3ab^2 \\)):</strong></p>
+Coef: <input type="number" id="b2" value="6">
+Var1: <input type="text" id="var1c" value="x"> Exp1: <input type="number" id="exp1c" value="1">
+Var2: <input type="text" id="var2c" value="y"> Exp2: <input type="number" id="exp2c" value="2">
+
+<p><strong>Cuarto término (\\( b^3 \\)):</strong></p>
+Coef: <input type="number" id="d" value="1">
+Var1: <input type="text" id="var1d" value="y"> Exp1: <input type="number" id="exp1d" value="3">
+Var2: <input type="text" id="var2d" value=""> Exp2: <input type="number" id="exp2d" value="0">
+
+<button onclick="resolver()">Resolver</button>
+
+<div id="resultado"></div>
+
+<script>
+function construirSimbolo(coef, var1, exp1, var2, exp2) {
+  let simbolo = coef.toString();
+  if (var1 && exp1 !== 0) simbolo += var1 + "^{" + exp1 + "}";
+  if (var2 && exp2 !== 0) simbolo += var2 + "^{" + exp2 + "}";
+  return simbolo;
+}
+
+function raizCubica(coef, var1, exp1, var2, exp2) {
+  const rc = Math.cbrt(coef);
+  let simbolo = rc.toFixed(2);
+  if (var1 && exp1 !== 0) simbolo += var1 + "^{" + (exp1 / 3) + "}";
+  if (var2 && exp2 !== 0) simbolo += var2 + "^{" + (exp2 / 3) + "}";
+  return {
+    coef: rc,
+    simbolo
+  };
+}
+
+function resolver() {
+  const a = parseFloat(document.getElementById('a').value);
+  const var1a = document.getElementById('var1a').value;
+  const exp1a = parseInt(document.getElementById('exp1a').value);
+  const var2a = document.getElementById('var2a').value;
+  const exp2a = parseInt(document.getElementById('exp2a').value);
+
+  const b1 = parseFloat(document.getElementById('b1').value);
+  const var1b = document.getElementById('var1b').value;
+  const exp1b = parseInt(document.getElementById('exp1b').value);
+  const var2b = document.getElementById('var2b').value;
+  const exp2b = parseInt(document.getElementById('exp2b').value);
+
+  const b2 = parseFloat(document.getElementById('b2').value);
+  const var1c = document.getElementById('var1c').value;
+  const exp1c = parseInt(document.getElementById('exp1c').value);
+  const var2c = document.getElementById('var2c').value;
+  const exp2c = parseInt(document.getElementById('exp2c').value);
+
+  const d = parseFloat(document.getElementById('d').value);
+  const var1d = document.getElementById('var1d').value;
+  const exp1d = parseInt(document.getElementById('exp1d').value);
+  const var2d = document.getElementById('var2d').value;
+  const exp2d = parseInt(document.getElementById('exp2d').value);
+
+  const raizA = raizCubica(a, var1a, exp1a, var2a, exp2a);
+  const raizB = raizCubica(d, var1d, exp1d, var2d, exp2d);
+
+  const esperadoB1 = 3 * Math.pow(raizA.coef, 2) * raizB.coef;
+  const esperadoB2 = 3 * raizA.coef * Math.pow(raizB.coef, 2);
+
+  let pasos = '';
+
+  const ecuacion = `\\(${construirSimbolo(a, var1a, exp1a, var2a, exp2a)} + ${construirSimbolo(b1, var1b, exp1b, var2b, exp2b)} + ${construirSimbolo(b2, var1c, exp1c, var2c, exp2c)} + ${construirSimbolo(d, var1d, exp1d, var2d, exp2d)}\\)`;
+  pasos += `<div class="paso">🔰 Ecuación a resolver: ${ecuacion}</div>`;
+  pasos += `<div class="paso">🔹 Paso 1: Raíz cúbica del primer término → \\(${raizA.simbolo}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 2: Raíz cúbica del cuarto término → \\(${raizB.simbolo}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 3: Verificamos segundo término → \\(3 \\cdot ${raizA.coef.toFixed(2)}^2 \\cdot ${raizB.coef.toFixed(2)} = ${esperadoB1.toFixed(2)}\\)</div>`;
+  pasos += `<div class="paso">🔹 Paso 4: Verificamos tercer término → \\(3 \\cdot ${raizA.coef.toFixed(2)} \\cdot ${raizB.coef.toFixed(2)}^2 = ${esperadoB2.toFixed(2)}\\)</div>`;
+
+  const coincideB1 = Math.abs(esperadoB1 - b1) < 0.01;
+  const coincideB2 = Math.abs(esperadoB2 - b2) < 0.01;
+
+  if (coincideB1 && coincideB2) {
+     pasos += `<div class="paso">✅ Todos los términos coinciden → ¡Es un cubo perfecto!</div>`;
+    pasos += `<div class="paso">🎉 Factorización final: \\((${raizA.simbolo} + ${raizB.simbolo})^3\\)</div>`;
+  } else {
+    pasos += `<div class="paso">❌ No coinciden los términos esperados → No es un cubo perfecto.</div>`;
+  }
+
+  document.getElementById('resultado').innerHTML = pasos;
+  MathJax.typeset();
+}
+</script>
+
+</body>
+</html>

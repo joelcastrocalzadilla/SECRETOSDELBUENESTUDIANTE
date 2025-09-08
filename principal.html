@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>El Secreto del Buen Alumno</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #fbe9e7;
+      padding: 30px;
+      text-align: center;
+      border-bottom: 2px solid #ff6f00;
+    }
+    header h1 {
+      font-size: 2.8em;
+      color: #4e342e;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.3em;
+      color: #616161;
+      margin-top: 10px;
+    }
+    nav {
+      background-color: #eeeeee;
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+    nav a {
+      margin: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #4e342e;
+    }
+    section {
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .intro {
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .selector {
+      text-align: center;
+      margin: 20px;
+    }
+    select {
+      padding: 10px;
+      font-size: 1em;
+      margin: 10px;
+    }
+    iframe {
+      display: block;
+      margin: auto;
+      width: 90%;
+      height: 500px;
+      border: 2px solid #ccc;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>El Secreto del Buen Alumno</h1>
+  <p>Resuélvelo tú mismo</p>
+</header>
+
+<nav>
+  <a href="/p/algebra.html">🧮 Álgebra</a>
+  <a href="/p/geometria.html">📐 Geometría</a>
+  <a href="/p/quimica.html">🧪 Química</a>
+  <a href="/p/estadistica.html">📊 Estadística</a>
+  <a href="/p/funciones.html">📈 Funciones</a>
+  <a href="/p/trigonometria.html">🧠 Trigonometría</a>
+  <a href="/p/fisica.html">⚙️ Física</a>
+  <a href="/p/explora.html">🔍 Explora por tema</a>
+</nav>
+
+<section>
+  <div class="intro">
+    Bienvenido a este espacio donde el aprendizaje no se memoriza, se celebra.  
+    Aquí cada rutina es una ofrenda, cada corrección una danza, y cada resultado una fiesta.  
+    Si llegaste aquí, es porque estás listo para resolverlo tú mismo… pero nunca solo.
+  </div>
+</section>
+
+<div class="selector">
+  <label for="materia">📚 Selecciona una materia:</label>
+  <select id="materia" onchange="actualizarTemas()">
+    <option value="">-- Elige una materia --</option>
+    <option value="quimica">Química</option>
+    <option value="algebra">Álgebra</option>
+    <option value="geometria">Geometría</option>
+    <option value="fisica">Física</option>
+    <option value="trigonometria">Trigonometría</option>
+    <option value="estadistica">Estadística</option>
+    <option value="funciones">Funciones</option>
+  </select>
+
+  <label for="tema">📘 Selecciona una rutina:</label>
+  <select id="tema" onchange="cargarRutina()">
+    <option value="">-- Elige una rutina --</option>
+  </select>
+</div>
+
+<iframe id="visor" src="https://www.youtube.com/embed/QzVC2AdByjY?autoplay=1&mute=1&loop=1&playlist=QzVC2AdByjY" title="Visor de rutinas"></iframe>
+
+<script>
+const temasPorMateria = {
+  quimica: {
+    "Masa molar": "masamolar.html",
+    "Balance de ecuaciones": "quibalance.html",
+    "Balance por masa": "Balancemasa.html"
+  },
+  algebra: {
+    "Factor común": "factcomun.html",
+    "Factorización 1": "factorizacion1.html",
+    "Factorización 2": "factoriza2.html",
+    "Cuadrado perfecto": "cuadradoperfecto.html",
+    "Cubo perfecto": "cuboperfecto.html",
+    "Igualación de sistemas": "igualasist.html"
+  },
+  geometria: {
+    "Circunferencia": "circunferencia.html",
+    "Circuntangente": "circunrengente.html",
+    "Elipse": "elipse.html",
+    "Parábola": "parabola.html",
+    "Hipérbola": "hiperbola.html"
+  },
+  fisica: {
+    "MRU": "mru.html",
+    "MRV": "mrv.html",
+    "Energía potencial y cinética": "energía.html"
+  },
+  trigonometria: {
+    "Ley del seno": "leyseno.html",
+    "Identidades trigonométricas": "identidades.html"
+  },
+  estadistica: {
+    "Estadística completa": "estadisticas.html"
+  },
+  funciones: {
+    "Función lineal": "funcionlineal.html"
+  }
+};
+
+function actualizarTemas() {
+  const materia = document.getElementById("materia").value;
+  const temaSelect = document.getElementById("tema");
+  temaSelect.innerHTML = '<option value="">-- Elige una rutina --</option>';
+
+  if (temasPorMateria[materia]) {
+    for (const [nombre, archivo] of Object.entries(temasPorMateria[materia])) {
+      const option = document.createElement("option");
+      option.value = archivo;
+      option.textContent = nombre;
+      temaSelect.appendChild(option);
+    }
+  }
+}
+
+function cargarRutina() {
+  const archivo = document.getElementById("tema").value;
+  const visor = document.getElementById("visor");
+  if (archivo) {
+    visor.src = archivo;
+  }
+}
+</script>
+
+</body>
+</html>

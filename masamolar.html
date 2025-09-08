@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Masa Molar y Composición Centesimal</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f4; padding: 20px; color: #333; }
+    h1 { color: #4e342e; }
+    .paso { background-color: #fff8e1; border-left: 5px solid #ff6f00; padding: 10px; margin-top: 15px; }
+    .celebracion { background-color: #c8e6c9; border-left: 5px solid #388e3c; padding: 10px; font-weight: bold; }
+    input { margin: 5px; width: 100px; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    td, th { border: 1px solid #ccc; padding: 5px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<h1>⚗️ Masa Molar y Composición Centesimal</h1>
+<p>Ingresa hasta 4 elementos con sus subíndices y masas atómicas. El sistema calculará la masa molar y la composición porcentual de cada elemento.</p>
+
+<div>
+  <input id="compuesto" placeholder="Nombre del compuesto (ej. H2SO4)">
+</div>
+<div>
+  <input id="e1" placeholder="Elemento 1"><input id="s1" type="number" placeholder="Subíndice"><input id="m1" type="number" placeholder="Masa atómica">
+</div>
+<div>
+  <input id="e2" placeholder="Elemento 2"><input id="s2" type="number" placeholder="Subíndice"><input id="m2" type="number" placeholder="Masa atómica">
+</div>
+<div>
+  <input id="e3" placeholder="Elemento 3"><input id="s3" type="number" placeholder="Subíndice"><input id="m3" type="number" placeholder="Masa atómica">
+</div>
+<div>
+  <input id="e4" placeholder="Elemento 4"><input id="s4" type="number" placeholder="Subíndice"><input id="m4" type="number" placeholder="Masa atómica">
+</div>
+
+<button onclick="calcular()">✨ Calcular</button>
+<div id="resultado"></div>
+
+<script>
+function calcular() {
+  const nombre = document.getElementById("compuesto").value.trim();
+  const elementos = [];
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`e${i}`).value.trim();
+    const sub = parseFloat(document.getElementById(`s${i}`).value);
+    const masa = parseFloat(document.getElementById(`m${i}`).value);
+    if (el && !isNaN(sub) && !isNaN(masa)) {
+      elementos.push({ simbolo: el, subindice: sub, masaAtomica: masa });
+    }
+  }
+
+  if (elementos.length === 0) {
+    document.getElementById("resultado").innerHTML = "<div class='paso'>⚠️ Debes ingresar al menos un elemento con su subíndice y masa atómica.</div>";
+    return;
+  }
+
+  let masaTotal = 0;
+  let html = `<div class="paso">🔍 Compuesto: <strong>${nombre}</strong></div>`;
+  html += `<div class="paso">🧮 Paso 1: Cálculo de masa molar<br><table><tr><th>Elemento</th><th>Masa atómica</th><th>Subíndice</th><th>Multiplicación</th><th>Masa total</th></tr>`;
+
+  elementos.forEach(e => {
+    e.masaElemento = e.subindice * e.masaAtomica;
+    masaTotal += e.masaElemento;
+    html += `<tr><td>${e.simbolo}</td><td>${e.masaAtomica}</td><td>${e.subindice}</td><td>${e.masaAtomica} × ${e.subindice}</td><td>${e.masaElemento.toFixed(3)}</td></tr>`;
+  });
+
+  html += `</table><br><strong>Masa molar total:</strong> ${masaTotal.toFixed(3)} g/mol</div>`;
+
+  html += `<div class="paso">📊 Paso 2: Composición centesimal<br><table><tr><th>Elemento</th><th>Masa del elemento</th><th>Operación</th><th>Porcentaje (%)</th></tr>`;
+  let sumaPorcentajes = 0;
+
+  elementos.forEach(e => {
+    e.porcentaje = (e.masaElemento / masaTotal) * 100;
+    sumaPorcentajes += e.porcentaje;
+    const operacion = `\\(\\frac{${e.masaElemento.toFixed(3)}}{${masaTotal.toFixed(3)}} \\times 100\\)`;
+    html += `<tr><td>${e.simbolo}</td><td>${e.masaElemento.toFixed(3)}</td><td>${operacion}</td><td>${e.porcentaje.toFixed(2)}%</td></tr>`;
+  });
+
+  html += `<tr><th colspan="3">Suma total</th><th>${sumaPorcentajes.toFixed(2)}%</th></tr>`;
+  html += `</table></div>`;
+
+  html += `<div class="celebracion">🎊 Cálculo completado. Cada elemento ha revelado su peso en el todo.</div>`;
+
+  document.getElementById("resultado").innerHTML = html;
+  MathJax.typeset();
+}
+</script>
+
+</body>
+</html>
