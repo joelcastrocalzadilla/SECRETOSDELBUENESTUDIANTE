@@ -14,13 +14,22 @@
     input { margin: 5px; width: 100px; }
     table { border-collapse: collapse; margin-top: 10px; }
     td, th { border: 1px solid #ccc; padding: 5px; text-align: center; }
-
-    .nav { margin-top: 24px; text-align: center; }
-    .btn {
-      padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 6px;
-      background-color: #ffe0b2; color: #4e342e;
+    .btn-regresar {
+      margin-top: 20px;
+      text-align: center;
     }
-    .btn:hover { background-color: #ffcc80; }
+    .btn-regresar button {
+      padding: 10px 20px;
+      background-color: #ffe0b2;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #4e342e;
+    }
+    .btn-regresar button:hover {
+      background-color: #ffcc80;
+    }
   </style>
 </head>
 <body>
@@ -46,6 +55,7 @@
 
 <button onclick="calcular()">✨ Calcular</button>
 <div id="resultado"></div>
+
 <script>
 function calcular() {
   const nombre = document.getElementById("compuesto").value.trim();
@@ -91,36 +101,18 @@ function calcular() {
 
   html += `<div class="celebracion">🎊 Cálculo completado. Cada elemento ha revelado su peso en el todo.</div>`;
 
+  html += `<div class="btn-regresar">
+    <button onclick="window.location.href='teomasamolar.html'">⬅️ Regresar a la teoría</button>
+  </div>`;
+
   document.getElementById("resultado").innerHTML = html;
   if (window.MathJax && MathJax.typeset) MathJax.typeset();
-}
-
-/*
-  Regresar “inteligente”:
-  1) Si hay historial, vuelve atrás.
-  2) Si hay referrer, navega a esa URL.
-  3) Si no hay nada, usa una URL de respaldo que defines tú.
-*/
-function regresar() {
-  const respaldo = 'teomasamolar.html'; // CAMBIA esto por tu página de origen real.
-  try {
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-    if (document.referrer) {
-      window.location.href = document.referrer;
-      return;
-    }
-    window.location.href = respaldo;
-  } catch (e) {
-    window.location.href = respaldo;
-  }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
