@@ -14,6 +14,13 @@
     input { margin: 5px; width: 100px; }
     table { border-collapse: collapse; margin-top: 10px; }
     td, th { border: 1px solid #ccc; padding: 5px; text-align: center; }
+
+    .nav { margin-top: 24px; text-align: center; }
+    .btn {
+      padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 6px;
+      background-color: #ffe0b2; color: #4e342e;
+    }
+    .btn:hover { background-color: #ffcc80; }
   </style>
 </head>
 <body>
@@ -40,6 +47,10 @@
 <button onclick="calcular()">✨ Calcular</button>
 <div id="resultado"></div>
 
+<div class="nav">
+  <button type="button" class="btn" onclick="regresar()">⬅️ Regresar</button>
+</div>
+
 <script>
 function calcular() {
   const nombre = document.getElementById("compuesto").value.trim();
@@ -59,7 +70,7 @@ function calcular() {
   }
 
   let masaTotal = 0;
-  let html = `<div class="paso">🔍 Compuesto: <strong>${nombre}</strong></div>`;
+  let html = `<div class="paso">🔍 Compuesto: <strong>${nombre || '(sin nombre)'}</strong></div>`;
   html += `<div class="paso">🧮 Paso 1: Cálculo de masa molar<br><table><tr><th>Elemento</th><th>Masa atómica</th><th>Subíndice</th><th>Multiplicación</th><th>Masa total</th></tr>`;
 
   elementos.forEach(e => {
@@ -86,15 +97,34 @@ function calcular() {
   html += `<div class="celebracion">🎊 Cálculo completado. Cada elemento ha revelado su peso en el todo.</div>`;
 
   document.getElementById("resultado").innerHTML = html;
-  MathJax.typeset();
+  if (window.MathJax && MathJax.typeset) MathJax.typeset();
+}
+
+/*
+  Regresar “inteligente”:
+  1) Si hay historial, vuelve atrás.
+  2) Si hay referrer, navega a esa URL.
+  3) Si no hay nada, usa una URL de respaldo que defines tú.
+*/
+function regresar() {
+  const respaldo = 'inicio.html'; // CAMBIA esto por tu página de origen real.
+  try {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    if (document.referrer) {
+      window.location.href = document.referrer;
+      return;
+    }
+    window.location.href = respaldo;
+  } catch (e) {
+    window.location.href = respaldo;
+  }
 }
 </script>
 
 </body>
-<div style="margin-top: 30px; text-align: center;">
-  <button onclick="window.location.href='inicio.html'" style="padding: 10px 20px; background-color: #ffe0b2; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
-    ⬅️ Regresar al programa anterior
-  </button>
-</div>
-
 </html>
+
+
