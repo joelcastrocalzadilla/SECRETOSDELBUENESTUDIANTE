@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📖 Teoría: Ley del Seno</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e8eaf6;
+      color: #333;
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      color: #3f51b5;
+    }
+    p {
+      line-height: 1.6;
+    }
+    ul {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .ejemplo {
+      background-color: #c5cae9;
+      padding: 15px;
+      border-left: 4px solid #7986cb;
+    }
+    .ritual {
+      font-style: italic;
+      color: #616161;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📖 Teoría: Ley del Seno</h1>
+
+<p><strong>Origen:</strong> La ley del seno fue desarrollada en el contexto de la trigonometría clásica para resolver triángulos oblicuángulos, es decir, aquellos que no tienen ángulos rectos. Su formulación se remonta a matemáticos árabes y griegos que estudiaban la relación entre lados y ángulos en figuras no rectangulares.</p>
+
+<p><strong>Definición:</strong> En cualquier triángulo, los lados son proporcionales a los senos de sus ángulos opuestos. Se expresa como:</p>
+
+<p style="text-align:center;">
+  $$\frac{a}{\sin(\alpha)} = \frac{b}{\sin(\beta)} = \frac{c}{\sin(\gamma)}$$
+</p>
+
+<p>donde \( a, b, c \) son los lados del triángulo y \( \alpha, \beta, \gamma \) sus ángulos opuestos.</p>
+
+<p><strong>Importancia:</strong> Esta ley permite resolver triángulos cuando no se puede aplicar el teorema de Pitágoras. Es esencial en navegación, astronomía, arquitectura y geodesia.</p>
+
+<p><strong>Uso en la vida real:</strong> Se aplica en triangulación de terrenos, diseño de estructuras, cálculo de distancias inaccesibles y en sistemas GPS. También en simulaciones gráficas y modelado tridimensional.</p>
+
+<p><strong>Casos comunes:</strong></p>
+<ul>
+  <li>LAA: dos ángulos y un lado</li>
+  <li>LLA: dos lados y el ángulo opuesto a uno de ellos</li>
+</ul>
+
+<div class="ejemplo">
+  <strong>Ejemplo de cálculo:</strong><br>
+  En un triángulo, se conocen: \( a = 10 \, \text{cm}, \quad \alpha = 30^\circ, \quad \beta = 45^\circ \)<br>
+  Aplicamos la ley del seno:<br>
+  $$\frac{10}{\sin(30^\circ)} = \frac{b}{\sin(45^\circ)}$$<br>
+  $$\frac{10}{0.5} = \frac{b}{0.707} \Rightarrow b = \frac{10 \times 0.707}{0.5} = 14.14 \, \text{cm}$$
+</div>
+
+<p class="ritual">📐 Has comprendido la proporción. Ahora puedes resolver con armonía trigonométrica.</p>
+
+</body>
+</html>

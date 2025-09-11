@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teorema del Coseno Ritualizado</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    canvas { border: 1px solid #000; margin-top: 20px; }
+    input { margin: 5px; width: 100px; }
+    label { display: block; margin-top: 10px; }
+  </style>
+  <!-- MathJax para mostrar fórmulas como en Word -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+</head>
+<body>
+  <h2>🔺 Ceremonia del Teorema del Coseno</h2>
+  <p>Ingresa tres lados <strong>o</strong> dos lados y el ángulo entre ellos:</p>
+
+  <label>Lado a: <input type="number" id="a"></label>
+  <label>Lado b: <input type="number" id="b"></label>
+  <label>Lado c: <input type="number" id="c"></label>
+  <label>Ángulo C (°): <input type="number" id="angleC"></label>
+  <button onclick="resolver()">Aplicar Teorema</button>
+
+  <div id="resultado" style="margin-top:20px;"></div>
+  <canvas id="triangulo" width="800" height="600"></canvas>
+
+  <script>
+    function resolver() {
+      const a = parseFloat(document.getElementById("a").value);
+      const b = parseFloat(document.getElementById("b").value);
+      let c = parseFloat(document.getElementById("c").value);
+      let angleC = parseFloat(document.getElementById("angleC").value);
+      let resultado = "";
+
+      let angleA, angleB;
+
+      // Detectar si hay dos lados y un ángulo → calcular el tercer lado
+      if (a && b && angleC && !c) {
+        const radC = angleC * Math.PI / 180;
+        c = Math.sqrt(a*a + b*b - 2*a*b*Math.cos(radC));
+        resultado += `<h3>🔍 Cálculo del lado c:</h3>`;
+        resultado += `<p>\\[ c = \\sqrt{${a}^2 + ${b}^2 - 2 \\cdot ${a} \\cdot ${b} \\cdot \\cos(${angleC}^\\circ)} \\]</p>`;
+        resultado += `<p>\\[ c = \\sqrt{${(a*a).toFixed(2)} + ${(b*b).toFixed(2)} - 2 \\cdot ${a} \\cdot ${b} \\cdot \\cos(${angleC}^\\circ)} = ${c.toFixed(2)} \\]</p>`;
+      }
+
+      // Si ya tenemos los tres lados → calcular todos los ángulos
+      if (a && b && c) {
+        const cosC = (a*a + b*b - c*c) / (2*a*b);
+        const cosA = (b*b + c*c - a*a) / (2*b*c);
+        const cosB = (a*a + c*c - b*b) / (2*a*c);
+
+        if ([cosA, cosB, cosC].some(v => v < -1 || v > 1)) {
+          resultado += `<p>⚠️ Los lados no forman un triángulo válido.</p>`;
+        } else {
+          angleC = Math.acos(cosC) * 180 / Math.PI;
+          angleA = Math.acos(cosA) * 180 / Math.PI;
+          angleB = Math.acos(cosB) * 180 / Math.PI;
+
+          resultado += `<h3>📐 Sustitución en fórmulas:</h3>`;
+          resultado += `<p>\\[ \\cos(C) = \\frac{${a}^2 + ${b}^2 - ${c}^2}{2 \\cdot ${a} \\cdot ${b}} = ${cosC.toFixed(4)} \\Rightarrow C = ${angleC.toFixed(2)}^\\circ \\]</p>`;
+          resultado += `<p>\\[ \\cos(A) = \\frac{${b}^2 + ${c}^2 - ${a}^2}{2 \\cdot ${b} \\cdot ${c}} = ${cosA.toFixed(4)} \\Rightarrow A = ${angleA.toFixed(2)}^\\circ \\]</p>`;
+          resultado += `<p>\\[ \\cos(B) = \\frac{${a}^2 + ${c}^2 - ${b}^2}{2 \\cdot ${a} \\cdot ${c}} = ${cosB.toFixed(4)} \\Rightarrow B = ${angleB.toFixed(2)}^\\circ \\]</p>`;
+
+          resultado += `<h3>✅ Resultados ritualizados:</h3>`;
+          resultado += `<ul>`;
+          resultado += `<li>Lado a = ${a.toFixed(2)}</li>`;
+          resultado += `<li>Lado b = ${b.toFixed(2)}</li>`;
+          resultado += `<li>Lado c = ${c.toFixed(2)}</li>`;
+          resultado += `<li>Ángulo A = ${angleA.toFixed(2)}°</li>`;
+          resultado += `<li>Ángulo B = ${angleB.toFixed(2)}°</li>`;
+          resultado += `<li>Ángulo C = ${angleC.toFixed(2)}°</li>`;
+          resultado += `</ul>`;
+        }
+      } else {
+        resultado += `<p>⚠️ Ingresa tres lados o dos lados y un ángulo.</p>`;
+      }
+
+      document.getElementById("resultado").innerHTML = resultado;
+      MathJax.typeset(); // Renderiza las fórmulas
+
+      // Dibujo proporcional del triángulo
+      const canvas = document.getElementById("triangulo");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (a && b && c && angleA) {
+        const escala = 20;
+        const Ax = 100, Ay = 500;
+        const Bx = Ax + c * escala, By = Ay;
+        const radA = angleA * Math.PI / 180;
+        const Cx = Ax + b * escala * Math.cos(radA);
+        const Cy = Ay - b * escala * Math.sin(radA);
+
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bx, By);
+        ctx.lineTo(Cx, Cy);
+        ctx.closePath();
+        ctx.stroke();
+
+        // Etiquetas de vértices
+        ctx.fillText("A", Ax - 10, Ay + 10);
+        ctx.fillText("B", Bx + 10, By + 10);
+        ctx.fillText("C", Cx, Cy - 10);
+
+        // Lados
+        ctx.fillText(`a = ${a.toFixed(2)}`, (Bx + Cx)/2, (By + Cy)/2);
+        ctx.fillText(`b = ${b.toFixed(2)}`, (Ax + Cx)/2, (Ay + Cy)/2);
+        ctx.fillText(`c = ${c.toFixed(2)}`, (Ax + Bx)/2, Ay + 15);
+
+        // Ángulos
+        ctx.fillText(`A = ${angleA.toFixed(1)}°`, Ax - 30, Ay + 30);
+        ctx.fillText(`B = ${angleB.toFixed(1)}°`, Bx + 20, By + 30);
+        ctx.fillText(`C = ${angleC.toFixed(1)}°`, Cx + 10, Cy - 20);
+      }
+    }
+  </script>
+</body>
+</html>

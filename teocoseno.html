@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📖 Teoría: Ley del Coseno</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fbe9e7;
+      color: #333;
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      color: #d84315;
+    }
+    p {
+      line-height: 1.6;
+    }
+    ul {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .ejemplo {
+      background-color: #ffccbc;
+      padding: 15px;
+      border-left: 4px solid #ff7043;
+    }
+    .ritual {
+      font-style: italic;
+      color: #616161;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📖 Teoría: Ley del Coseno</h1>
+
+<p><strong>Origen:</strong> La ley del coseno es una extensión del teorema de Pitágoras, desarrollada para resolver triángulos oblicuángulos. Su formulación se remonta a la geometría clásica y fue refinada por matemáticos árabes como al-Battani y al-Kashi, quienes la aplicaron en astronomía y navegación.</p>
+
+<p><strong>Definición:</strong> La ley del coseno relaciona los lados de un triángulo con el coseno del ángulo opuesto. Se utiliza cuando no se puede aplicar la ley del seno, especialmente en casos donde se conocen dos lados y el ángulo entre ellos.</p>
+
+<p style="text-align:center;">
+  $$c^2 = a^2 + b^2 - 2ab \cdot \cos(\gamma)$$
+</p>
+
+<p>donde \( a, b, c \) son los lados del triángulo y \( \gamma \) es el ángulo opuesto al lado \( c \).</p>
+
+<p><strong>Importancia:</strong> Esta ley permite calcular lados o ángulos en triángulos no rectángulos. Es esencial en ingeniería estructural, diseño de rutas, geodesia y física aplicada.</p>
+
+<p><strong>Uso en la vida real:</strong> Se aplica en el diseño de puentes, cálculo de distancias entre puntos geográficos, simulaciones gráficas, arquitectura y robótica. También en navegación aérea y marítima.</p>
+
+<p><strong>Casos comunes:</strong></p>
+<ul>
+  <li>LLA: dos lados y el ángulo entre ellos</li>
+  <li>LLL: tres lados para calcular un ángulo</li>
+</ul>
+
+<div class="ejemplo">
+  <strong>Ejemplo de cálculo:</strong><br>
+  En un triángulo, se conocen: \( a = 8 \, \text{cm}, \quad b = 6 \, \text{cm}, \quad \gamma = 60^\circ \)<br>
+  Aplicamos la ley del coseno:<br>
+  $$c^2 = 8^2 + 6^2 - 2 \cdot 8 \cdot 6 \cdot \cos(60^\circ)$$<br>
+  $$c^2 = 64 + 36 - 96 \cdot 0.5 = 100 - 48 = 52$$<br>
+  $$c = \sqrt{52} \approx 7.21 \, \text{cm}$$
+</div>
+
+<p class="ritual">📐 Has comprendido la relación. Ahora puedes resolver con precisión trigonométrica.</p>
+
+</body>
+</html>
