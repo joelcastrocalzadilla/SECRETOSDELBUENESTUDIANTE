@@ -2,58 +2,48 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>El Secreto del Buen Alumno</title>
+  <title>Masa Molar y Composición Centesimal</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
+      background-color: #f4f4f4;
+      padding: 20px;
       color: #333;
     }
-    header {
-      background-color: #fbe9e7;
-      padding: 30px;
-      text-align: center;
-      border-bottom: 2px solid #ff6f00;
-    }
-    header h1 {
-      font-size: 2.8em;
+    h1 {
       color: #4e342e;
-      margin: 0;
+      text-align: center;
     }
-    header p {
-      font-size: 1.3em;
-      color: #616161;
+    .paso {
+      background-color: #fff8e1;
+      border-left: 5px solid #ff6f00;
+      padding: 10px;
+      margin-top: 15px;
+    }
+    .celebracion {
+      background-color: #c8e6c9;
+      border-left: 5px solid #388e3c;
+      padding: 10px;
+      font-weight: bold;
+    }
+    input {
+      margin: 5px;
+      width: 100px;
+    }
+    table {
+      border-collapse: collapse;
       margin-top: 10px;
+      width: 100%;
     }
-    section {
-      padding: 30px;
-      max-width: 850px;
-      margin: auto;
-    }
-    .intro {
-      font-size: 1.1em;
-      line-height: 1.6;
-      color: #444;
-      margin-bottom: 20px;
+    td, th {
+      border: 1px solid #ccc;
+      padding: 5px;
       text-align: center;
     }
-    .imagen-secreta {
-      text-align: center;
-      margin: 30px auto;
-    }
-    .imagen-secreta img {
-      max-width: 90%;
-      height: auto;
-      border: 2px solid #ccc;
-      background-color: #fff;
-    }
-    .acciones {
-      text-align: center;
-      margin-top: 50px;
-    }
-    .acciones button {
+    button {
       padding: 16px 32px;
       margin: 12px;
       font-size: 1.2em;
@@ -68,53 +58,112 @@
       box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
       transition: background-color 0.3s ease;
     }
-    .acciones button:hover {
+    button:hover {
       background-color: #ffe0b2;
+    }
+    .botones {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .mensaje {
+      text-align: center;
+      font-style: italic;
+      color: #888;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>El Secreto del Buen Alumno</h1>
-  <p>Resuélvelo tú mismo: cada materia guarda una teoría celebratoria que puedes explorar.</p>
-</header>
+<h1>⚗️ Masa Molar y Composición Centesimal</h1>
+<p style="text-align:center;">Ingresa hasta 4 elementos con sus subíndices y masas atómicas. El sistema calculará la masa molar y la composición porcentual de cada elemento.</p>
 
-<section>
-  <div class="intro">
-    Bienvenido a este espacio donde el aprendizaje no se memoriza, se celebra.<br>
-    Aquí cada rutina es una ofrenda, cada corrección una danza, y cada resultado una fiesta.<br>
-    Si llegaste aquí, es porque estás listo para resolverlo tú mismo… pero nunca solo.
-  </div>
-</section>
-
-<div class="imagen-secreta">
-  <img src="https://github.com/joelcastrocalzadilla/SECRETOSDELBUENESTUDIANTE/raw/main/una%20llave%20dorada%20sus.png" 
-       alt="El Secreto del Buen Alumno">
+<div style="text-align:center;">
+  <input id="compuesto" placeholder="Nombre del compuesto (ej. H₂SO₄)">
+</div>
+<div style="text-align:center;">
+  <input id="e1" placeholder="Elemento 1"><input id="s1" type="number" placeholder="Subíndice"><input id="m1" type="number" placeholder="Masa atómica">
+</div>
+<div style="text-align:center;">
+  <input id="e2" placeholder="Elemento 2"><input id="s2" type="number" placeholder="Subíndice"><input id="m2" type="number" placeholder="Masa atómica">
+</div>
+<div style="text-align:center;">
+  <input id="e3" placeholder="Elemento 3"><input id="s3" type="number" placeholder="Subíndice"><input id="m3" type="number" placeholder="Masa atómica">
+</div>
+<div style="text-align:center;">
+  <input id="e4" placeholder="Elemento 4"><input id="s4" type="number" placeholder="Subíndice"><input id="m4" type="number" placeholder="Masa atómica">
 </div>
 
-<div class="acciones">
-  <button onclick="regresar()">🔙 Volver al origen</button>
-  <button onclick="irAMasaMolar()">⚗️ Ir a cálculo de masa molar</button>
+<div style="text-align:center;">
+  <button onclick="calcular()">✨ Calcular</button>
+</div>
+
+<div id="resultado"></div>
+
+<div class="mensaje">
+  ¿Listo para cerrar el ciclo celebratorio o regresar a la teoría?
+</div>
+
+<div class="botones">
+  <button onclick="irATeoria()">📖 Ir a la teoría celebratoria</button>
+  <button onclick="salirDelCiclo()">🏛️ Volver al selector principal</button>
 </div>
 
 <script>
-function getOrigen() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("origen");
-}
-
-function regresar() {
-  const origen = getOrigen();
-  if (origen === "selector") {
-    window.top.location.href = "principal.html";
-  } else {
-    window.history.back();
+function calcular() {
+  const nombre = document.getElementById("compuesto").value.trim();
+  const elementos = [];
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`e${i}`).value.trim();
+    const sub = parseFloat(document.getElementById(`s${i}`).value);
+    const masa = parseFloat(document.getElementById(`m${i}`).value);
+    if (el && !isNaN(sub) && !isNaN(masa)) {
+      elementos.push({ simbolo: el, subindice: sub, masaAtomica: masa });
+    }
   }
+
+  if (elementos.length === 0) {
+    document.getElementById("resultado").innerHTML = "<div class='paso'>⚠️ Debes ingresar al menos un elemento con su subíndice y masa atómica.</div>";
+    return;
+  }
+
+  let masaTotal = 0;
+  let html = `<div class="paso">🔍 Compuesto: <strong>${nombre || '(sin nombre)'}</strong></div>`;
+  html += `<div class="paso">🧮 Paso 1: Cálculo de masa molar<br><table><tr><th>Elemento</th><th>Masa atómica</th><th>Subíndice</th><th>Multiplicación</th><th>Masa total</th></tr>`;
+
+  elementos.forEach(e => {
+    e.masaElemento = e.subindice * e.masaAtomica;
+    masaTotal += e.masaElemento;
+    html += `<tr><td>${e.simbolo}</td><td>${e.masaAtomica}</td><td>${e.subindice}</td><td>${e.masaAtomica} × ${e.subindice}</td><td>${e.masaElemento.toFixed(3)}</td></tr>`;
+  });
+
+  html += `</table><br><strong>Masa molar total:</strong> ${masaTotal.toFixed(3)} g/mol</div>`;
+
+  html += `<div class="paso">📊 Paso 2: Composición centesimal<br><table><tr><th>Elemento</th><th>Masa del elemento</th><th>Operación</th><th>Porcentaje (%)</th></tr>`;
+  let sumaPorcentajes = 0;
+
+  elementos.forEach(e => {
+    e.porcentaje = (e.masaElemento / masaTotal) * 100;
+    sumaPorcentajes += e.porcentaje;
+    const operacion = `\\(\\frac{${e.masaElemento.toFixed(3)}}{${masaTotal.toFixed(3)}} \\times 100\\)`;
+    html += `<tr><td>${e.simbolo}</td><td>${e.masaElemento.toFixed(3)}</td><td>${operacion}</td><td>${e.porcentaje.toFixed(2)}%</td></tr>`;
+  });
+
+  html += `<tr><th colspan="3">Suma total</th><th>${sumaPorcentajes.toFixed(2)}%</th></tr>`;
+  html += `</table></div>`;
+
+  html += `<div class="celebracion">🎊 Cálculo completado. Cada elemento ha revelado su peso en el todo.</div>`;
+
+  document.getElementById("resultado").innerHTML = html;
+  if (window.MathJax && MathJax.typeset) MathJax.typeset();
 }
 
-function irAMasaMolar() {
-  window.location.href = "masamolar.html?origen=teoria";
+function irATeoria() {
+  window.location.href = "teomasamolar.html?origen=masamolar";
+}
+
+function salirDelCiclo() {
+  window.top.location.href = "principal.html";
 }
 </script>
 
