@@ -49,12 +49,13 @@
       border: 2px solid #ccc;
       background-color: #fff;
     }
-    .regreso {
+    .acciones {
       text-align: center;
       margin-top: 40px;
     }
-    .regreso button {
+    .acciones button {
       padding: 10px 20px;
+      margin: 10px;
       background-color: #fff3e0;
       border: 2px solid #ffccbc;
       border-radius: 8px;
@@ -62,7 +63,7 @@
       color: #d84315;
       cursor: pointer;
     }
-    .regreso button:hover {
+    .acciones button:hover {
       background-color: #ffe0b2;
     }
   </style>
@@ -87,8 +88,9 @@
        alt="El Secreto del Buen Alumno">
 </div>
 
-<div class="regreso">
-  <button onclick="regresar()">🔙 Volver</button>
+<div class="acciones">
+  <button onclick="regresar()">🔙 Volver al origen</button>
+  <button onclick="irAMasaMolar()">⚗️ Ir a cálculo de masa molar</button>
 </div>
 
 <script>
@@ -104,6 +106,10 @@ function regresar() {
   } else {
     window.history.back();
   }
+}
+
+function irAMasaMolar() {
+  window.location.href = "masamolar.html?origen=teoria";
 }
 </script>
 
