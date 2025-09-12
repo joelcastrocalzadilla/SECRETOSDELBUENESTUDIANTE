@@ -2,86 +2,106 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>📖 Teoría: Masa Molar</title>
+  <title>Teoría Celebratoria: Masa Molar</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fefefe;
+      background-color: #fff8f0;
+      margin: 0;
+      padding: 0;
       color: #333;
+    }
+    header {
+      background-color: #ffe0b2;
+      padding: 25px;
+      text-align: center;
+      border-bottom: 2px solid #ff9800;
+    }
+    header h1 {
+      font-size: 2.5em;
+      color: #5d4037;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2em;
+      color: #6d4c41;
+      margin-top: 10px;
+    }
+    section {
       padding: 30px;
       max-width: 800px;
       margin: auto;
     }
-    h1 {
-      color: #388e3c;
-    }
-    p {
+    .teoria {
+      font-size: 1.1em;
       line-height: 1.6;
+      color: #444;
+      margin-bottom: 20px;
     }
-    .ejemplo {
-      background-color: #e8f5e9;
-      padding: 15px;
-      border-left: 4px solid #66bb6a;
-      margin-top: 20px;
-    }
-    .ritual {
-      font-style: italic;
-      color: #616161;
-      margin-top: 30px;
-    }
-    .botones {
-      margin-top: 40px;
+    .regreso {
       text-align: center;
+      margin-top: 40px;
     }
-    .botones button {
+    .regreso button {
       padding: 10px 20px;
-      margin: 5px;
-      background-color: #a5d6a7;
-      border: none;
-      border-radius: 5px;
+      background-color: #fff3e0;
+      border: 2px solid #ffccbc;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #d84315;
       cursor: pointer;
-      font-size: 16px;
     }
-    .botones button:hover {
-      background-color: #81c784;
+    .regreso button:hover {
+      background-color: #ffe0b2;
+    }
+    .mensaje {
+      text-align: center;
+      font-style: italic;
+      color: #888;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-<h1>📖 Teoría: Masa Molar</h1>
+<header>
+  <h1>Teoría Celebratoria: Masa Molar</h1>
+  <p>Antes de calcular, honra la danza invisible de los átomos.</p>
+</header>
 
-<p><strong>Origen:</strong> El concepto de masa molar surge de la necesidad de relacionar la masa de una sustancia con la cantidad de partículas que la componen. Fue formalizado en el siglo XIX junto con el desarrollo de la teoría atómica y la ley de Avogadro.</p>
+<section>
+  <div class="teoria">
+    La masa molar es la suma de las masas atómicas de todos los elementos en una molécula.  
+    <br><br>
+    Por ejemplo, para el agua (H₂O):  
+    <ul>
+      <li>2 átomos de hidrógeno × 1 g/mol = 2 g/mol</li>
+      <li>1 átomo de oxígeno × 16 g/mol = 16 g/mol</li>
+    </ul>
+    <strong>Total:</strong> 18 g/mol  
+    <br><br>
+    Esta teoría celebratoria te invita a contemplar la estructura oculta de la materia antes de calcularla.  
+    Cada número es una ofrenda, cada fórmula una danza.
+  </div>
 
-<p><strong>Definición:</strong> La masa molar es la cantidad de gramos que contiene un mol de una sustancia. Se calcula sumando las masas atómicas de todos los elementos presentes en una molécula. Su unidad es <strong>g/mol</strong>.</p>
+  <div class="mensaje">
+    ¿Listo para explorar otra materia? Toca la llave dorada 🔑 para regresar al selector principal.
+  </div>
 
-<p><strong>Importancia:</strong> La masa molar permite convertir entre gramos y moles, lo cual es esencial en cualquier cálculo químico. Es la base para preparar soluciones, balancear ecuaciones y entender proporciones en reacciones.</p>
+  <div class="regreso">
+    <button onclick="salirDelVisor()">🔍 Volver a selección por tema</button>
+  </div>
+</section>
 
-<p><strong>Uso en la vida real:</strong> En la industria farmacéutica, la masa molar se usa para dosificar medicamentos con precisión. En la alimentación, se aplica para calcular proporciones en suplementos. En laboratorios, es clave para preparar reactivos exactos.</p>
+<script>
+function salirDelVisor() {
+  if (window.self !== window.top) {
+    window.top.location.href = 'principal.html';
+  } else {
+    window.location.href = 'principal.html';
+  }
+}
+</script>
 
-<div class="ejemplo">
-  <strong>Ejemplo de cálculo:</strong><br>
-  ¿Cuál es la masa molar del ácido sulfúrico H<sub>2</sub>SO<sub>4</sub>?<br>
-  H: 2 × 1.008 = 2.016<br>
-  S: 1 × 32.06 = 32.06<br>
-  O: 4 × 15.999 = 63.996<br>
-  <strong>Total:</strong> 2.016 + 32.06 + 63.996 = <strong>98.072 g/mol</strong>
-</div>
-
-<p class="ritual">🌱 Ahora que conoces el ritmo, estás listo para resolverlo tú mismo.</p>
-<div class="botones">
-  <button onclick="window.location.href='principal.html'">⬅️ Regresar y seleccionar por temas</button>
-  <button onclick="window.location.href='masamolar.html'">📘 Abrir rutina de Masa Molar</button>
-</div>
- 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
