@@ -15,7 +15,7 @@
     table { border-collapse: collapse; margin-top: 10px; }
     td, th { border: 1px solid #ccc; padding: 5px; text-align: center; }
     .btn-regresar {
-      margin-top: 20px;
+      margin-top: 30px;
       text-align: center;
     }
     .btn-regresar button {
@@ -30,6 +30,12 @@
     .btn-regresar button:hover {
       background-color: #ffcc80;
     }
+    .mensaje {
+      text-align: center;
+      font-style: italic;
+      color: #888;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -38,7 +44,7 @@
 <p>Ingresa hasta 4 elementos con sus subíndices y masas atómicas. El sistema calculará la masa molar y la composición porcentual de cada elemento.</p>
 
 <div>
-  <input id="compuesto" placeholder="Nombre del compuesto (ej. H2SO4)">
+  <input id="compuesto" placeholder="Nombre del compuesto (ej. H₂SO₄)">
 </div>
 <div>
   <input id="e1" placeholder="Elemento 1"><input id="s1" type="number" placeholder="Subíndice"><input id="m1" type="number" placeholder="Masa atómica">
@@ -101,12 +107,22 @@ function calcular() {
 
   html += `<div class="celebracion">🎊 Cálculo completado. Cada elemento ha revelado su peso en el todo.</div>`;
 
+  html += `<div class="mensaje">Toca la llave dorada 🔑 para regresar a la teoría celebratoria.</div>`;
+
   html += `<div class="btn-regresar">
-    <button onclick="window.location.href='teomasamolar.html'">⬅️ Regresar a la teoría</button>
+    <button onclick="salirDelVisor()">⬅️ Regresar a la teoría</button>
   </div>`;
 
   document.getElementById("resultado").innerHTML = html;
   if (window.MathJax && MathJax.typeset) MathJax.typeset();
+}
+
+function salirDelVisor() {
+  if (window.self !== window.top) {
+    window.top.location.href = 'teomasamolar.html';
+  } else {
+    window.location.href = 'teomasamolar.html';
+  }
 }
 </script>
 
