@@ -60,13 +60,18 @@
       font-size: 1em;
       margin: 10px;
     }
-    iframe {
-      display: block;
-      margin: auto;
-      width: 90%;
-      height: 500px;
-      border: 2px solid #ccc;
-      background-color: #fff;
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #ffe0b2;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #4e342e;
+    }
+    button:hover {
+      background-color: #ffcc80;
     }
   </style>
 </head>
@@ -110,12 +115,13 @@
   </select>
 
   <label for="tema">📘 Selecciona una rutina:</label>
-  <select id="tema" onchange="cargarRutina()">
+  <select id="tema">
     <option value="">-- Elige una rutina --</option>
   </select>
-</div>
 
-<iframe id="visor" src="https://www.youtube.com/embed/QzVC2AdByjY?autoplay=1&mute=1&loop=1&playlist=QzVC2AdByjY" title="Visor de rutinas"></iframe>
+  <br>
+  <button onclick="cargarRutina()">✨ Ir a la rutina</button>
+</div>
 
 <script>
 const temasPorMateria = {
@@ -142,7 +148,7 @@ const temasPorMateria = {
   fisica: {
     "MRU": "mru.html",
     "MRV": "mrv.html",
-    "Energía potencial y cinética": "energía.html"
+    "Energía potencial y cinética": "energia.html"
   },
   trigonometria: {
     "Ley del seno": "leyseno.html",
@@ -173,9 +179,8 @@ function actualizarTemas() {
 
 function cargarRutina() {
   const archivo = document.getElementById("tema").value;
-  const visor = document.getElementById("visor");
   if (archivo) {
-    visor.src = archivo;
+    window.location.href = archivo;
   }
 }
 </script>
