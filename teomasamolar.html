@@ -38,9 +38,15 @@
       color: #444;
       margin-bottom: 20px;
     }
+    .mensaje {
+      text-align: center;
+      font-style: italic;
+      color: #888;
+      margin-top: 30px;
+    }
     .regreso {
       text-align: center;
-      margin-top: 40px;
+      margin-top: 20px;
     }
     .regreso button {
       padding: 10px 20px;
@@ -53,12 +59,6 @@
     }
     .regreso button:hover {
       background-color: #ffe0b2;
-    }
-    .mensaje {
-      text-align: center;
-      font-style: italic;
-      color: #888;
-      margin-top: 20px;
     }
   </style>
 </head>
@@ -85,20 +85,26 @@
   </div>
 
   <div class="mensaje">
-    ¿Listo para explorar otra materia? Toca la llave dorada 🔑 para regresar al selector principal.
+    Toca la llave dorada 🔑 para regresar al origen que te llamó.
   </div>
 
   <div class="regreso">
-    <button onclick="salirDelVisor()">🔍 Volver a selección por tema</button>
+    <button onclick="regresar()">🔙 Volver</button>
   </div>
 </section>
 
 <script>
-function salirDelVisor() {
-  if (window.self !== window.top) {
-    window.top.location.href = 'principal.html';
+function getOrigen() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("origen");
+}
+
+function regresar() {
+  const origen = getOrigen();
+  if (origen === "selector") {
+    window.top.location.href = "principal.html";
   } else {
-    window.location.href = 'principal.html';
+    window.history.back();
   }
 }
 </script>
