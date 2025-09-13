@@ -2,86 +2,88 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>📐 Teoría: Circunferencia y Círculo</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <title>📖 Teoría: Circunferencia</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fffde7;
-      color: #333;
+      background-color: #e3f2fd;
+      color: #0d47a1;
       padding: 30px;
       max-width: 800px;
       margin: auto;
     }
     h1 {
-      color: #fbc02d;
+      color: #1565c0;
     }
     p {
       line-height: 1.6;
     }
-    ul {
-      margin-top: 10px;
-      margin-bottom: 20px;
-    }
     .ejemplo {
-      background-color: #fff9c4;
+      background-color: #bbdefb;
       padding: 15px;
-      border-left: 4px solid #fdd835;
+      border-left: 4px solid #64b5f6;
+      margin-top: 20px;
     }
     .ritual {
       font-style: italic;
-      color: #616161;
+      color: #1a237e;
       margin-top: 30px;
+    }
+    .botones-rituales {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .botones-rituales button {
+      background-color: #1565c0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .botones-rituales button:hover {
+      background-color: #0d47a1;
     }
   </style>
 </head>
 <body>
 
-<h1>📐 Teoría: Circunferencia y Círculo</h1>
+<h1>📖 Teoría: Circunferencia</h1>
 
-<p><strong>Definición:</strong>  
-Una <strong>circunferencia</strong> es una línea curva cerrada y plana formada por todos los puntos que están a una distancia fija (radio) de un punto central.  
-Un <strong>círculo</strong> es la región plana delimitada por una circunferencia. Es decir, la circunferencia es el borde, y el círculo es el área interna.</p>
+<p><strong>Definición:</strong> La circunferencia es el conjunto de puntos en el plano que están a una distancia constante (radio) de un punto fijo llamado centro.</p>
 
-<p><strong>Partes principales:</strong></p>
-<ul>
-  <li><strong>Centro:</strong> punto equidistante de todos los puntos de la circunferencia</li>
-  <li><strong>Radio:</strong> distancia del centro a cualquier punto de la circunferencia</li>
-  <li><strong>Diámetro:</strong> segmento que une dos puntos de la circunferencia pasando por el centro.  
-    $$d = 2r$$
-  </li>
-  <li><strong>Cuerda:</strong> segmento que une dos puntos de la circunferencia sin pasar por el centro</li>
-  <li><strong>Arco:</strong> porción de la circunferencia entre dos puntos</li>
-  <li><strong>Recta tangente:</strong> línea que toca la circunferencia en un solo punto</li>
-  <li><strong>Recta secante:</strong> línea que corta la circunferencia en dos puntos</li>
-</ul>
+<p><strong>Elementos:</strong>  
+- <strong>Centro:</strong> punto fijo del que parten todos los radios  
+- <strong>Radio:</strong> distancia del centro a cualquier punto de la circunferencia  
+- <strong>Diámetro:</strong> segmento que pasa por el centro y une dos puntos opuestos  
+- <strong>Longitud:</strong> perímetro de la circunferencia, calculado como \( L = 2\pi r \)</p>
 
-<p><strong>Fórmulas clave:</strong></p>
-<ul>
-  <li><strong>Perímetro (longitud de la circunferencia):</strong>  
-    $$P = 2\pi r$$
-  </li>
-  <li><strong>Área del círculo:</strong>  
-    $$A = \pi r^2$$
-  </li>
-</ul>
+<p><strong>Ecuación:</strong> En el plano cartesiano, la ecuación general de una circunferencia con centro en \((h, k)\) y radio \(r\) es:  
 
-<p><strong>Importancia:</strong>  
-Estas figuras son fundamentales en geometría, diseño, física y arquitectura. Permiten calcular trayectorias circulares, áreas de superficies, y longitudes curvas.</p>
 
-<p><strong>Uso en la vida real:</strong>  
-Se aplican en diseño de ruedas, relojes, engranajes, estructuras circulares, medición de terrenos, y en el arte visual. También en astronomía, óptica y robótica.</p>
+\[ (x - h)^2 + (y - k)^2 = r^2 \]
+
+</p>
 
 <div class="ejemplo">
-  <strong>Ejemplo de cálculo:</strong><br>
-  Si el radio de una circunferencia es \( r = 5 \, \text{cm} \):<br>
-  $$P = 2\pi r = 2 \cdot 3.1416 \cdot 5 \approx 31.42 \, \text{cm}$$<br>
-  $$A = \pi r^2 = 3.1416 \cdot 25 \approx 78.54 \, \text{cm}^2$$
+  <strong>Ejemplo:</strong><br>
+  ¿Cuál es la ecuación de una circunferencia con centro en (3, -2) y radio 5?<br>
+  Aplicamos la fórmula:<br>
+  
+
+\[ (x - 3)^2 + (y + 2)^2 = 25 \]
+
+
 </div>
 
-<p class="ritual">🌀 Has comprendido la forma perfecta. Ahora puedes calcular con armonía circular.</p>
+<p class="ritual">🌀 Has recorrido el círculo completo del saber. Estás listo para trazar con precisión.</p>
+
+<div class="botones-rituales">
+  <button onclick="window.location.href='circunferencia.html'">🧠 Resolver ejercicios</button>
+  <button onclick="window.location.href='principal.html'">🚪 Salir del sistema</button>
+</div>
 
 </body>
 </html>
