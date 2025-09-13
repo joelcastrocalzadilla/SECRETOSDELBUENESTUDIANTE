@@ -186,7 +186,25 @@ function balancear() {
   document.getElementById("resultado").innerHTML = html;
   MathJax.typeset();
 }
+   html += `<div class="mensaje">Toca la llave dorada 🔑 para regresar a la teoría celebratoria.</div>`;
+
+  html += `<div class="btn-regresar">
+    <button onclick="salirDelVisor()">⬅️ Regresar a la teoría</button>
+  </div>`;
+
+  document.getElementById("resultado").innerHTML = html;
+  if (window.MathJax && MathJax.typeset) MathJax.typeset();
+}
+
+function salirDelVisor() {
+  if (window.self !== window.top) {
+    window.top.location.href = 'teomasamolar.html';
+  } else {
+    window.location.href = 'teomasamolar.html';
+  }
+}
 </script>
 
 </body>
+
 </html>
