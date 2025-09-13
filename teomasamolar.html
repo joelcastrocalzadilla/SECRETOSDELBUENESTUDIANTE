@@ -2,170 +2,57 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Masa Molar y Composición Centesimal</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <title>📖 Teoría: Masa Molar</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
-      padding: 20px;
+      background-color: #fefefe;
       color: #333;
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
     }
     h1 {
-      color: #4e342e;
-      text-align: center;
+      color: #388e3c;
     }
-    .paso {
-      background-color: #fff8e1;
-      border-left: 5px solid #ff6f00;
-      padding: 10px;
-      margin-top: 15px;
+    p {
+      line-height: 1.6;
     }
-    .celebracion {
-      background-color: #c8e6c9;
-      border-left: 5px solid #388e3c;
-      padding: 10px;
-      font-weight: bold;
-    }
-    input {
-      margin: 5px;
-      width: 100px;
-    }
-    table {
-      border-collapse: collapse;
-      margin-top: 10px;
-      width: 100%;
-    }
-    td, th {
-      border: 1px solid #ccc;
-      padding: 5px;
-      text-align: center;
-    }
-    button {
-      padding: 16px 32px;
-      margin: 12px;
-      font-size: 1.2em;
-      background-color: #fff3e0;
-      border: 3px solid #ffccbc;
-      border-radius: 12px;
-      font-weight: bold;
-      color: #d84315;
-      cursor: pointer;
-      min-width: 250px;
-      display: inline-block;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #ffe0b2;
-    }
-    .botones {
-      text-align: center;
-      margin-top: 40px;
-    }
-    .mensaje {
-      text-align: center;
-      font-style: italic;
-      color: #888;
+    .ejemplo {
+      background-color: #e8f5e9;
+      padding: 15px;
+      border-left: 4px solid #66bb6a;
       margin-top: 20px;
+    }
+    .ritual {
+      font-style: italic;
+      color: #616161;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
-<h1>⚗️ Masa Molar y Composición Centesimal</h1>
-<p style="text-align:center;">Ingresa hasta 4 elementos con sus subíndices y masas atómicas. El sistema calculará la masa molar y la composición porcentual de cada elemento.</p>
+<h1>📖 Teoría: Masa Molar</h1>
 
-<div style="text-align:center;">
-  <input id="compuesto" placeholder="Nombre del compuesto (ej. H₂SO₄)">
-</div>
-<div style="text-align:center;">
-  <input id="e1" placeholder="Elemento 1"><input id="s1" type="number" placeholder="Subíndice"><input id="m1" type="number" placeholder="Masa atómica">
-</div>
-<div style="text-align:center;">
-  <input id="e2" placeholder="Elemento 2"><input id="s2" type="number" placeholder="Subíndice"><input id="m2" type="number" placeholder="Masa atómica">
-</div>
-<div style="text-align:center;">
-  <input id="e3" placeholder="Elemento 3"><input id="s3" type="number" placeholder="Subíndice"><input id="m3" type="number" placeholder="Masa atómica">
-</div>
-<div style="text-align:center;">
-  <input id="e4" placeholder="Elemento 4"><input id="s4" type="number" placeholder="Subíndice"><input id="m4" type="number" placeholder="Masa atómica">
-</div>
+<p><strong>Origen:</strong> El concepto de masa molar surge de la necesidad de relacionar la masa de una sustancia con la cantidad de partículas que la componen. Fue formalizado en el siglo XIX junto con el desarrollo de la teoría atómica y la ley de Avogadro.</p>
 
-<div style="text-align:center;">
-  <button onclick="calcular()">✨ Calcular</button>
+<p><strong>Definición:</strong> La masa molar es la cantidad de gramos que contiene un mol de una sustancia. Se calcula sumando las masas atómicas de todos los elementos presentes en una molécula. Su unidad es <strong>g/mol</strong>.</p>
+
+<p><strong>Importancia:</strong> La masa molar permite convertir entre gramos y moles, lo cual es esencial en cualquier cálculo químico. Es la base para preparar soluciones, balancear ecuaciones y entender proporciones en reacciones.</p>
+
+<p><strong>Uso en la vida real:</strong> En la industria farmacéutica, la masa molar se usa para dosificar medicamentos con precisión. En la alimentación, se aplica para calcular proporciones en suplementos. En laboratorios, es clave para preparar reactivos exactos.</p>
+
+<div class="ejemplo">
+  <strong>Ejemplo de cálculo:</strong><br>
+  ¿Cuál es la masa molar del ácido sulfúrico H<sub>2</sub>SO<sub>4</sub>?<br>
+  H: 2 × 1.008 = 2.016<br>
+  S: 1 × 32.06 = 32.06<br>
+  O: 4 × 15.999 = 63.996<br>
+  <strong>Total:</strong> 2.016 + 32.06 + 63.996 = <strong>98.072 g/mol</strong>
 </div>
 
-<div id="resultado"></div>
-
-<div class="mensaje">
-  ¿Listo para cerrar el ciclo celebratorio o regresar a la teoría?
-</div>
-
-<div class="botones">
-  <button onclick="irATeoria()">📖 Ir a la teoría celebratoria</button>
-  <button onclick="salirDelCiclo()">🏛️ Volver al selector principal</button>
-</div>
-
-<script>
-function calcular() {
-  const nombre = document.getElementById("compuesto").value.trim();
-  const elementos = [];
-  for (let i = 1; i <= 4; i++) {
-    const el = document.getElementById(`e${i}`).value.trim();
-    const sub = parseFloat(document.getElementById(`s${i}`).value);
-    const masa = parseFloat(document.getElementById(`m${i}`).value);
-    if (el && !isNaN(sub) && !isNaN(masa)) {
-      elementos.push({ simbolo: el, subindice: sub, masaAtomica: masa });
-    }
-  }
-
-  if (elementos.length === 0) {
-    document.getElementById("resultado").innerHTML = "<div class='paso'>⚠️ Debes ingresar al menos un elemento con su subíndice y masa atómica.</div>";
-    return;
-  }
-
-  let masaTotal = 0;
-  let html = `<div class="paso">🔍 Compuesto: <strong>${nombre || '(sin nombre)'}</strong></div>`;
-  html += `<div class="paso">🧮 Paso 1: Cálculo de masa molar<br><table><tr><th>Elemento</th><th>Masa atómica</th><th>Subíndice</th><th>Multiplicación</th><th>Masa total</th></tr>`;
-
-  elementos.forEach(e => {
-    e.masaElemento = e.subindice * e.masaAtomica;
-    masaTotal += e.masaElemento;
-    html += `<tr><td>${e.simbolo}</td><td>${e.masaAtomica}</td><td>${e.subindice}</td><td>${e.masaAtomica} × ${e.subindice}</td><td>${e.masaElemento.toFixed(3)}</td></tr>`;
-  });
-
-  html += `</table><br><strong>Masa molar total:</strong> ${masaTotal.toFixed(3)} g/mol</div>`;
-
-  html += `<div class="paso">📊 Paso 2: Composición centesimal<br><table><tr><th>Elemento</th><th>Masa del elemento</th><th>Operación</th><th>Porcentaje (%)</th></tr>`;
-  let sumaPorcentajes = 0;
-
-  elementos.forEach(e => {
-    e.porcentaje = (e.masaElemento / masaTotal) * 100;
-    sumaPorcentajes += e.porcentaje;
-    const operacion = `\\(\\frac{${e.masaElemento.toFixed(3)}}{${masaTotal.toFixed(3)}} \\times 100\\)`;
-    html += `<tr><td>${e.simbolo}</td><td>${e.masaElemento.toFixed(3)}</td><td>${operacion}</td><td>${e.porcentaje.toFixed(2)}%</td></tr>`;
-  });
-
-  html += `<tr><th colspan="3">Suma total</th><th>${sumaPorcentajes.toFixed(2)}%</th></tr>`;
-  html += `</table></div>`;
-
-  html += `<div class="celebracion">🎊 Cálculo completado. Cada elemento ha revelado su peso en el todo.</div>`;
-
-  document.getElementById("resultado").innerHTML = html;
-  if (window.MathJax && MathJax.typeset) MathJax.typeset();
-}
-
-function irATeoria() {
-  window.location.href = "teomasamolar.html?origen=masamolar";
-}
-
-function salirDelCiclo() {
-  window.top.location.href = "principal.html";
-}
-</script>
+<p class="ritual">🌱 Ahora que conoces el ritmo, estás listo para resolverlo tú mismo.</p>
 
 </body>
 </html>
