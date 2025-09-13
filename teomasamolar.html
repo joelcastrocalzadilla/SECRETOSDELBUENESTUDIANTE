@@ -2,57 +2,133 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>📖 Teoría: Masa Molar</title>
+  <title>Masa Molar – El Secreto del Buen Alumno</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fefefe;
+      background-color: #fff8f0;
+      margin: 0;
+      padding: 0;
       color: #333;
+    }
+    header {
+      background-color: #ffe0b2;
+      padding: 30px;
+      text-align: center;
+      border-bottom: 2px solid #ff6f00;
+    }
+    header h1 {
+      font-size: 2.5em;
+      color: #4e342e;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2em;
+      color: #6d4c41;
+      margin-top: 10px;
+    }
+    section {
       padding: 30px;
       max-width: 800px;
       margin: auto;
     }
-    h1 {
-      color: #388e3c;
+    .barra-controles {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px 12px;
+      background: #f3f3f3;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin: 16px 0 24px;
     }
-    p {
+    .ctrl-btn {
+      appearance: none;
+      border: none;
+      padding: 10px 14px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #4e342e;
+      background: #ffe0b2;
+      transition: transform .04s ease, background .15s ease, box-shadow .15s ease;
+      box-shadow: 0 1px 0 rgba(0,0,0,.05);
+    }
+    .ctrl-btn:hover { background: #ffcc80; }
+    .ctrl-btn:active { transform: translateY(1px); }
+    .ctrl-btn--salir { background: #ffebee; color: #b71c1c; }
+    .ctrl-btn--salir:hover { background: #ffcdd2; }
+    .contenido {
+      font-size: 1.1em;
       line-height: 1.6;
-    }
-    .ejemplo {
-      background-color: #e8f5e9;
-      padding: 15px;
-      border-left: 4px solid #66bb6a;
+      color: #444;
       margin-top: 20px;
-    }
-    .ritual {
-      font-style: italic;
-      color: #616161;
-      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
-<h1>📖 Teoría: Masa Molar</h1>
+<header>
+  <h1>Masa Molar</h1>
+  <p>Una danza entre átomos y gramos</p>
+</header>
 
-<p><strong>Origen:</strong> El concepto de masa molar surge de la necesidad de relacionar la masa de una sustancia con la cantidad de partículas que la componen. Fue formalizado en el siglo XIX junto con el desarrollo de la teoría atómica y la ley de Avogadro.</p>
+<section>
+  <div class="barra-controles" role="toolbar" aria-label="Controles de página">
+    <button class="ctrl-btn ctrl-btn--salir" onclick="salirDelSistema()" title="Volver a la selección de teorías">
+      ⬅️ Salir del sistema
+    </button>
 
-<p><strong>Definición:</strong> La masa molar es la cantidad de gramos que contiene un mol de una sustancia. Se calcula sumando las masas atómicas de todos los elementos presentes en una molécula. Su unidad es <strong>g/mol</strong>.</p>
+    <button class="ctrl-btn" onclick="resolverEjercicios()" title="Ir a los ejercicios de Masa molar">
+      ✅ Resolver ejercicios
+    </button>
+  </div>
 
-<p><strong>Importancia:</strong> La masa molar permite convertir entre gramos y moles, lo cual es esencial en cualquier cálculo químico. Es la base para preparar soluciones, balancear ecuaciones y entender proporciones en reacciones.</p>
+  <div class="contenido">
+    <h2>¿Qué es la masa molar?</h2>
+    <p>
+      La masa molar es la cantidad de gramos que contiene un mol de una sustancia. Se calcula sumando las masas atómicas de los elementos que componen un compuesto.  
+      Por ejemplo, la masa molar del agua (H₂O) se obtiene sumando dos veces la masa del hidrógeno (1 g/mol) y una vez la del oxígeno (16 g/mol), dando un total de 18 g/mol.
+    </p>
 
-<p><strong>Uso en la vida real:</strong> En la industria farmacéutica, la masa molar se usa para dosificar medicamentos con precisión. En la alimentación, se aplica para calcular proporciones en suplementos. En laboratorios, es clave para preparar reactivos exactos.</p>
+    <h3>¿Por qué es importante?</h3>
+    <p>
+      La masa molar permite convertir entre moles y gramos, lo que es esencial para realizar cálculos estequiométricos, preparar soluciones y entender reacciones químicas.
+    </p>
 
-<div class="ejemplo">
-  <strong>Ejemplo de cálculo:</strong><br>
-  ¿Cuál es la masa molar del ácido sulfúrico H<sub>2</sub>SO<sub>4</sub>?<br>
-  H: 2 × 1.008 = 2.016<br>
-  S: 1 × 32.06 = 32.06<br>
-  O: 4 × 15.999 = 63.996<br>
-  <strong>Total:</strong> 2.016 + 32.06 + 63.996 = <strong>98.072 g/mol</strong>
-</div>
+    <h3>Ejemplo básico</h3>
+    <p>
+      ¿Cuál es la masa molar del NaCl?  
+      <br>Na = 23 g/mol, Cl = 35.5 g/mol  
+      <br><strong>Resultado:</strong> 58.5 g/mol
+    </p>
+  </div>
+</section>
 
-<p class="ritual">🌱 Ahora que conoces el ritmo, estás listo para resolverlo tú mismo.</p>
+<script>
+  const RUTA_PRINCIPAL = "principal.html"; // Ajusta si está en otra carpeta
+  const RUTA_EJERCICIOS = "ejer_masamolar.html"; // Cambia por tu archivo real
+
+  function salirDelSistema() {
+    if (RUTA_PRINCIPAL) {
+      window.location.href = RUTA_PRINCIPAL;
+    } else {
+      window.history.back();
+    }
+  }
+
+  function resolverEjercicios() {
+    if (RUTA_EJERCICIOS) {
+      window.location.href = RUTA_EJERCICIOS;
+    } else {
+      alert("Ruta de ejercicios no configurada.");
+    }
+  }
+</script>
 
 </body>
 </html>
+
+
