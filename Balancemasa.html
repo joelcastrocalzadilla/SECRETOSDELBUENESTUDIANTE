@@ -25,6 +25,7 @@
 
 <h3>Reactivos</h3>
 <div id="reactivos">
+  <!-- Reactivos -->
   <div><input id="r1name" placeholder="Compuesto 1">
     <input id="r1e1"><input id="r1s1" type="number"><input id="r1m1" type="number">
     <input id="r1e2"><input id="r1s2" type="number"><input id="r1m2" type="number">
@@ -41,6 +42,7 @@
 
 <h3>Productos</h3>
 <div id="productos">
+  <!-- Productos -->
   <div><input id="p1name" placeholder="Compuesto 1">
     <input id="p1e1"><input id="p1s1" type="number"><input id="p1m1" type="number">
     <input id="p1e2"><input id="p1s2" type="number"><input id="p1m2" type="number">
@@ -122,8 +124,7 @@ function balancear() {
   if (encontrado) {
     const ecuacionBalanceada = [
       ...reactivos.map((c, i) => `${coefR[i] > 1 ? coefR[i] : ""}${c.nombre}`),
-      "→",
-...productos.map((c, i) => `${coefP[i] > 1 ? coefP[i] : ""}${c.nombre}`)
+      "→...productos.map((c, i) => `${coefP[i] > 1 ? coefP[i] : ""}${c.nombre}`)
     ].join(" + ").replace(" + → + ", " \\rightarrow ");
 
     html += `<div class="paso">🧮 Paso 2: Ecuación balanceada<br>\
@@ -179,23 +180,21 @@ function balancear() {
     html += `<div class="paso">⚠️ No se encontró balance en el rango de 1 a 10 moles. Revisa los subíndices o amplía el rango.</div>`;
   }
 
-  html += `<div class="mensaje">Toca la llave dorada 🔑 para regresar a la teoría celebratoria.</div>`;
+  html += `<div class="mensaje">Toca la llave dorada 🔑 para cerrar esta rutina celebratoria.</div>`;
   html += `<div class="btn-regresar">
-    <button onclick="salirDelVisor()">⬅️ Regresar a la teoría</button>
+    <button onclick="salirDelSistema()">🚪 Salir del sistema</button>
   </div>`;
 
   document.getElementById("resultado").innerHTML = html;
   if (window.MathJax && MathJax.typeset) MathJax.typeset();
 }
 
-function salirDelVisor() {
-  if (window.self !== window.top) {
-    window.top.location.href = 'teomasamolar.html';
-  } else {
-    window.location.href = 'teomasamolar.html';
-  }
+function salirDelSistema() {
+  window.location.href = 'principal.html';
 }
 </script>
 
 </body>
 </html>
+
+
