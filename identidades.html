@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Ceremonia de Identidades Trigonométricas</title>
+  <title>Identidades Trigonométricas Ritualizadas</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #222; }
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; color: #222; }
     canvas { border: 1px solid #000; margin-top: 20px; background: #fff; }
-    input { margin: 5px; width: 120px; padding: 6px; }
+    input { margin: 5px; width: 100px; padding: 6px; }
     label { display: block; margin-top: 10px; }
-    button { padding: 8px 14px; cursor: pointer; background-color: #4e342e; color: white; border: none; border-radius: 5px; }
+    button { padding: 8px 14px; background-color: #4e342e; color: white; border: none; border-radius: 5px; cursor: pointer; }
   </style>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async
@@ -17,11 +17,11 @@
 </head>
 <body>
   <h2>📐 Ceremonia de Identidades Trigonométricas</h2>
-  <p>Ingresa al menos dos lados del triángulo rectángulo. En esta ceremonia, <b>∠C = 90°</b> por diseño.</p>
+  <p>Ingresa al menos dos lados del triángulo rectángulo:</p>
 
-  <label>Cateto a (adyacente al ángulo A): <input type="number" id="a" step="any"></label>
-  <label>Cateto b (opuesto al ángulo A): <input type="number" id="b" step="any"></label>
-  <label>Hipotenusa c: <input type="number" id="c" step="any"></label>
+  <label>Cateto a (adyacente al ángulo A): <input type="number" id="a"></label>
+  <label>Cateto b (opuesto al ángulo A): <input type="number" id="b"></label>
+  <label>Hipotenusa c: <input type="number" id="c"></label>
   <button onclick="resolver()">Calcular razones</button>
 
   <div id="resultado" style="margin-top:20px;"></div>
@@ -39,7 +39,7 @@
         resultado += `<h3>📐 Cálculo de la hipotenusa:</h3>`;
         resultado += `<p>\
 
-\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = \\sqrt{${(a*a).toFixed(0)} + ${(b*b).toFixed(0)}} = \\sqrt{${(a*a + b*b).toFixed(0)}} = ${c.toFixed(2)} \\]
+\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = \\sqrt{${(a*a + b*b).toFixed(0)}} = ${c.toFixed(2)} \\]
 
 </p>`;
       } else if (c && b && !a) {
@@ -138,28 +138,28 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const escala = 20;
-      const Ax = 100, Ay = 500;
-      const Bx = Ax, By = Ay - b * escala;
-      const Cx = Ax + a * escala, Cy = Ay;
+      const Cx = 100, Cy = 500; // C es el ángulo recto
+      const Ax = Cx, Ay = Cy - b * escala;
+      const Bx = Cx + a * escala, By = Cy;
 
       ctx.beginPath();
-      ctx.moveTo(Ax, Ay); // A
+      ctx.moveTo(Cx, Cy); // C
+      ctx.lineTo(Ax, Ay); // A
       ctx.lineTo(Bx, By); // B
-      ctx.lineTo(Cx, Cy); // C
       ctx.closePath();
       ctx.stroke();
 
-      ctx.fillText("A", Ax - 10, Ay + 10);
-      ctx.fillText("B", Bx - 10, By - 10);
-      ctx.fillText("C", Cx + 10, Cy + 10);
+      ctx.fillText("C", Cx - 10, Cy + 10);
+      ctx.fillText("A", Ax - 10, Ay - 10);
+      ctx.fillText("B", Bx + 10, By + 10);
 
-      ctx.fillText(`a = ${a.toFixed(2)}`, (Ax + Cx)/2, Ay + 15);
-      ctx.fillText(`b = ${b.toFixed(2)}`, Ax - 40, (Ay + By)/2);
-      ctx.fillText(`c = ${c.toFixed(2)}`, (Cx + Bx)/2, (Cy + By)/2);
+      ctx.fillText(`a = ${a.toFixed(2)}`, (Cx + Bx)/2, Cy + 15);
+      ctx.fillText(`b = ${b.toFixed(2)}`, Cx - 40, (Cy + Ay)/2);
+      ctx.fillText(`c = ${c.toFixed(2)}`, (Ax + Bx)/2, (Ay + By)/2);
 
-      ctx.fillText(`∠A ≈ ${angleA.toFixed(1)}°`, Ax + 5, Ay - 5);
-      ctx.fillText(`∠B ≈ ${angleB.toFixed(1)}°`, Bx + 5, By + 5);
-      ctx.fillText(`∠C = 90°`, Cx - 30, Cy - 10);
+      ctx.fillText(`∠C = 90°`, Cx + 6, Cy - 6);
+      ctx.fillText(`∠A ≈ ${angleA.toFixed(1)}°`, Ax + 6, Ay + 16);
+      ctx.fillText(`∠B ≈ ${angleB.toFixed(1)}°`, Bx - 50, By - 8);
     }
   </script>
 
@@ -174,5 +174,4 @@
 </body>
 </html>
 
-
-  
+      
