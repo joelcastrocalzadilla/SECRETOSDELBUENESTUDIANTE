@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Ceremonia Simbólica de Identidades Trigonométricas</title>
+  <title>Identidades Trigonométricas Ritualizadas</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #222; }
-    input, button { margin: 5px; padding: 6px; font-size: 16px; }
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    canvas { border: 1px solid #000; margin-top: 20px; }
+    input { margin: 5px; width: 100px; }
     label { display: block; margin-top: 10px; }
-    canvas { border: 1px solid #000; margin-top: 20px; background: #fff; }
   </style>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async
@@ -15,121 +14,123 @@
   </script>
 </head>
 <body>
-  <h2>📐 Ceremonia Simbólica de Identidades Trigonométricas</h2>
-  <p>Ingresa expresiones algebraicas para los lados del triángulo rectángulo:</p>
+  <h2>📐 Ceremonia de Identidades Trigonométricas</h2>
+  <p>Ingresa al menos dos lados del triángulo rectángulo:</p>
 
-  <label>Cateto a (adyacente al ángulo A): <input type="text" id="a" placeholder="ej. 10 + sqrt(2)"></label>
-  <label>Cateto b (opuesto al ángulo A): <input type="text" id="b" placeholder="ej. sqrt(27) + 2*sqrt(3)"></label>
-  <button onclick="resolver()">Calcular razones simbólicas</button>
+  <label>Cateto a (adyacente al ángulo A): <input type="number" id="a"></label>
+  <label>Cateto b (opuesto al ángulo A): <input type="number" id="b"></label>
+  <label>Hipotenusa c: <input type="number" id="c"></label>
+  <button onclick="resolver()">Calcular razones</button>
 
   <div id="resultado" style="margin-top:20px;"></div>
   <canvas id="triangulo" width="800" height="600"></canvas>
 
   <script>
     function resolver() {
-      const aExpr = document.getElementById("a").value;
-      const bExpr = document.getElementById("b").value;
+      let a = parseFloat(document.getElementById("a").value);
+      let b = parseFloat(document.getElementById("b").value);
+      let c = parseFloat(document.getElementById("c").value);
+      let resultado = "";
 
-      try {
-        const a = math.evaluate(aExpr);
-        const b = math.evaluate(bExpr);
-        const cExpr = `sqrt((${aExpr})^2 + (${bExpr})^2)`;
-        const c = math.evaluate(cExpr);
+      // Detectar y calcular el lado faltante
+      if (a && b && !c) {
+        c = Math.sqrt(a*a + b*b);
+        resultado += `<h3>📐 Cálculo de la hipotenusa:</h3>`;
+        resultado += `<p>\\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = ${c.toFixed(2)} \\]</p>`;
+      } else if (c && b && !a) {
+        if (c <= b) {
+          resultado += `<p>⚠️ La hipotenusa debe ser mayor que el cateto.</p>`;
+          document.getElementById("resultado").innerHTML = resultado;
+          MathJax.typeset();
+          return;
+        }
+        a = Math.sqrt(c*c - b*b);
+        resultado += `<h3>📐 Cálculo del cateto a:</h3>`;
+        resultado += `<p>\\[ a = \\sqrt{c^2 - b^2} = \\sqrt{${c}^2 - ${b}^2} = ${a.toFixed(2)} \\]</p>`;
+      } else if (c && a && !b) {
+        if (c <= a) {
+          resultado += `<p>⚠️ La hipotenusa debe ser mayor que el cateto.</p>`;
+          document.getElementById("resultado").innerHTML = resultado;
+          MathJax.typeset();
+          return;
+        }
+        b = Math.sqrt(c*c - a*a);
+        resultado += `<h3>📐 Cálculo del cateto b:</h3>`;
+        resultado += `<p>\\[ b = \\sqrt{c^2 - a^2} = \\sqrt{${c}^2 - ${a}^2} = ${b.toFixed(2)} \\]</p>`;
+      }
 
-        const angleA = Math.atan(b / a) * 180 / Math.PI;
-        const angleB = 90 - angleA;
-
-        const resultado = `
-          <h3>📐 Hipotenusa:</h3>
-          <p>\
-
-\[ c = \\sqrt{(${aExpr})^2 + (${bExpr})^2} = ${cExpr} \\approx ${c.toFixed(4)} \\]
-
-</p>
-
-          <h3>📐 Razones trigonométricas para el ángulo A:</h3>
-          <p>\
-
-\[ \\sin(A) = \\frac{${bExpr}}{${cExpr}} \\approx ${(b / c).toFixed(4)} \\]
-
-</p>
-          <p>\
-
-\[ \\cos(A) = \\frac{${aExpr}}{${cExpr}} \\approx ${(a / c).toFixed(4)} \\]
-
-</p>
-          <p>\
-
-\[ \\tan(A) = \\frac{${bExpr}}{${aExpr}} \\approx ${(b / a).toFixed(4)} \\]
-
-</p>
-          <p>\
-
-\[ \\cot(A) = \\frac{${aExpr}}{${bExpr}} \\approx ${(a / b).toFixed(4)} \\]
-
-</p>
-          <p>\
-
-\[ \\sec(A) = \\frac{${cExpr}}{${aExpr}} \\approx ${(c / a).toFixed(4)} \\]
-
-</p>
-          <p>\
-
-\[ \\csc(A) = \\frac{${cExpr}}{${bExpr}} \\approx ${(c / b).toFixed(4)} \\]
-
-</p>
-
-          <h3>✅ Resultados inmediatos:</h3>
-          <ul>
-            <li>Cateto a = ${aExpr} ≈ ${a.toFixed(4)}</li>
-            <li>Cateto b = ${bExpr} ≈ ${b.toFixed(4)}</li>
-            <li>Hipotenusa = ${cExpr} ≈ ${c.toFixed(4)}</li>
-            <li>Ángulo A ≈ ${angleA.toFixed(4)}°</li>
-            <li>Ángulo B ≈ ${angleB.toFixed(4)}°</li>
-            <li>Ángulo C = 90.00°</li>
-          </ul>
-        `;
-
+      if (!(a && b && c)) {
+        resultado += `<p>⚠️ Ingresa al menos dos lados válidos.</p>`;
         document.getElementById("resultado").innerHTML = resultado;
         MathJax.typeset();
-
-        // Dibujo del triángulo
-        const canvas = document.getElementById("triangulo");
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        const escala = 20;
-        const Cx = 100, Cy = 500;
-        const Ax = Cx, Ay = Cy - b * escala;
-        const Bx = Cx + a * escala, By = Cy;
-
-        ctx.beginPath();
-        ctx.moveTo(Cx, Cy);
-        ctx.lineTo(Ax, Ay);
-        ctx.lineTo(Bx, By);
-        ctx.closePath();
-        ctx.stroke();
-
-        ctx.fillText("C", Cx - 10, Cy + 10);
-        ctx.fillText("A", Ax - 10, Ay - 10);
-        ctx.fillText("B", Bx + 10, By + 10);
-
-        ctx.fillText(`a ≈ ${a.toFixed(2)}`, (Cx + Bx)/2, Cy + 15);
-        ctx.fillText(`b ≈ ${b.toFixed(2)}`, Cx - 40, (Cy + Ay)/2);
-        ctx.fillText(`c ≈ ${c.toFixed(2)}`, (Ax + Bx)/2, (Ay + By)/2);
-
-        ctx.fillText(`∠C = 90°`, Cx + 6, Cy - 6);
-        ctx.fillText(`∠A ≈ ${angleA.toFixed(1)}°`, Ax + 6, Ay + 16);
-        ctx.fillText(`∠B ≈ ${angleB.toFixed(1)}°`, Bx - 50, By - 8);
-      } catch (err) {
-        document.getElementById("resultado").innerHTML = `<p>⚠️ Error en la expresión. Usa sintaxis como <code>sqrt(2)</code> o <code>10 + sqrt(3)</code>.</p>`;
+        return;
       }
+
+      // Cálculo de razones trigonométricas para ángulo A
+      const sinA = b / c;
+      const cosA = a / c;
+      const tanA = b / a;
+      const cotA = a / b;
+      const secA = c / a;
+      const cscA = c / b;
+      const angleA = Math.atan(b / a) * 180 / Math.PI;
+      const angleB = 90 - angleA;
+
+      resultado += `<h3>📐 Razones trigonométricas para el ángulo A:</h3>`;
+      resultado += `<p>\\[ \\sin(A) = \\frac{${b}}{${c}} = ${sinA.toFixed(4)} \\]</p>`;
+      resultado += `<p>\\[ \\cos(A) = \\frac{${a}}{${c}} = ${cosA.toFixed(4)} \\]</p>`;
+      resultado += `<p>\\[ \\tan(A) = \\frac{${b}}{${a}} = ${tanA.toFixed(4)} \\]</p>`;
+      resultado += `<p>\\[ \\cot(A) = \\frac{${a}}{${b}} = ${cotA.toFixed(4)} \\]</p>`;
+      resultado += `<p>\\[ \\sec(A) = \\frac{${c}}{${a}} = ${secA.toFixed(4)} \\]</p>`;
+      resultado += `<p>\\[ \\csc(A) = \\frac{${c}}{${b}} = ${cscA.toFixed(4)} \\]</p>`;
+
+      resultado += `<h3>✅ Resultados ritualizados:</h3>`;
+      resultado += `<ul>`;
+      resultado += `<li>Cateto a = ${a.toFixed(2)}</li>`;
+      resultado += `<li>Cateto b = ${b.toFixed(2)}</li>`;
+      resultado += `<li>Hipotenusa c = ${c.toFixed(2)}</li>`;
+      resultado += `<li>Ángulo A ≈ ${angleA.toFixed(2)}°</li>`;
+      resultado += `<li>Ángulo B ≈ ${angleB.toFixed(2)}°</li>`;
+      resultado += `<li>Ángulo C = 90°</li>`;
+      resultado += `</ul>`;
+
+      document.getElementById("resultado").innerHTML = resultado;
+      MathJax.typeset();
+
+      // Dibujo del triángulo rectángulo
+      const canvas = document.getElementById("triangulo");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const escala = 20;
+      const Ax = 100, Ay = 500;
+      const Bx = Ax, By = Ay - b * escala;
+      const Cx = Ax + a * escala, Cy = Ay;
+
+      ctx.beginPath();
+      ctx.moveTo(Ax, Ay); // A
+      ctx.lineTo(Bx, By); // B
+      ctx.lineTo(Cx, Cy); // C
+      ctx.closePath();
+      ctx.stroke();
+
+      // Vértices
+      ctx.fillText("A", Ax - 10, Ay + 10);
+      ctx.fillText("B", Bx - 10, By - 10);
+      ctx.fillText("C", Cx + 10, Cy + 10);
+
+      // Lados con valores
+      ctx.fillText(`a = ${a.toFixed(2)}`, (Ax + Cx)/2, Ay + 15); // base
+      ctx.fillText(`b = ${b.toFixed(2)}`, Ax - 40, (Ay + By)/2); // altura
+      ctx.fillText(`c = ${c.toFixed(2)}`, (Cx + Bx)/2, (Cy + By)/2); // hipotenusa
+
+      // Ángulos
+      ctx.fillText(`∠A ≈ ${angleA.toFixed(1)}°`, Ax + 5, Ay - 5);
+      ctx.fillText(`∠B ≈ ${angleB.toFixed(1)}°`, Bx + 5, By + 5);
+      ctx.fillText(`∠C = 90°`, Cx - 30, Cy - 10);
     }
   </script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
-
-  <div style="margin-top: 40px; text-align: center;">
+ <div style="margin-top: 40px; text-align: center;">
     <button onclick="window.location.href='principal.html'" style="padding: 10px 20px; background-color: #4e342e; color: white; border: none; border-radius: 5px; font-size: 16px;">
       🚪 Salir del sistema
     </button>
