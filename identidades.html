@@ -17,8 +17,8 @@
   <h2>📐 Ceremonia de Identidades Trigonométricas</h2>
   <p>Ingresa al menos dos lados del triángulo rectángulo:</p>
 
-  <label>Cateto a (adyacente al ángulo A): <input type="number" id="a"></label>
-  <label>Cateto b (opuesto al ángulo A): <input type="number" id="b"></label>
+  <label>Cateto a (adyacente al ángulo C): <input type="number" id="a"></label>
+  <label>Cateto b (opuesto al ángulo C): <input type="number" id="b"></label>
   <label>Hipotenusa c: <input type="number" id="c"></label>
   <button onclick="resolver()">Calcular razones</button>
 
@@ -32,11 +32,14 @@
       let c = parseFloat(document.getElementById("c").value);
       let resultado = "";
 
-      // Detectar y calcular el lado faltante
       if (a && b && !c) {
         c = Math.sqrt(a*a + b*b);
         resultado += `<h3>📐 Cálculo de la hipotenusa:</h3>`;
-        resultado += `<p>\\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = ${c.toFixed(2)} \\]</p>`;
+        resultado += `<p>\
+
+\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = ${c.toFixed(2)} \\]
+
+</p>`;
       } else if (c && b && !a) {
         if (c <= b) {
           resultado += `<p>⚠️ La hipotenusa debe ser mayor que el cateto.</p>`;
@@ -46,7 +49,11 @@
         }
         a = Math.sqrt(c*c - b*b);
         resultado += `<h3>📐 Cálculo del cateto a:</h3>`;
-        resultado += `<p>\\[ a = \\sqrt{c^2 - b^2} = \\sqrt{${c}^2 - ${b}^2} = ${a.toFixed(2)} \\]</p>`;
+        resultado += `<p>\
+
+\[ a = \\sqrt{c^2 - b^2} = \\sqrt{${c}^2 - ${b}^2} = ${a.toFixed(2)} \\]
+
+</p>`;
       } else if (c && a && !b) {
         if (c <= a) {
           resultado += `<p>⚠️ La hipotenusa debe ser mayor que el cateto.</p>`;
@@ -56,7 +63,11 @@
         }
         b = Math.sqrt(c*c - a*a);
         resultado += `<h3>📐 Cálculo del cateto b:</h3>`;
-        resultado += `<p>\\[ b = \\sqrt{c^2 - a^2} = \\sqrt{${c}^2 - ${a}^2} = ${b.toFixed(2)} \\]</p>`;
+        resultado += `<p>\
+
+\[ b = \\sqrt{c^2 - a^2} = \\sqrt{${c}^2 - ${a}^2} = ${b.toFixed(2)} \\]
+
+</p>`;
       }
 
       if (!(a && b && c)) {
@@ -66,76 +77,94 @@
         return;
       }
 
-      // Cálculo de razones trigonométricas para ángulo A
-      const sinA = b / c;
-      const cosA = a / c;
-      const tanA = b / a;
-      const cotA = a / b;
-      const secA = c / a;
-      const cscA = c / b;
-      const angleA = Math.atan(b / a) * 180 / Math.PI;
-      const angleB = 90 - angleA;
+      const sinC = b / c;
+      const cosC = a / c;
+      const tanC = b / a;
+      const cotC = a / b;
+      const secC = c / a;
+      const cscC = c / b;
+      const angleC = Math.atan(b / a) * 180 / Math.PI;
+      const angleB = 90 - angleC;
 
-      resultado += `<h3>📐 Razones trigonométricas para el ángulo A:</h3>`;
-      resultado += `<p>\\[ \\sin(A) = \\frac{${b}}{${c}} = ${sinA.toFixed(4)} \\]</p>`;
-      resultado += `<p>\\[ \\cos(A) = \\frac{${a}}{${c}} = ${cosA.toFixed(4)} \\]</p>`;
-      resultado += `<p>\\[ \\tan(A) = \\frac{${b}}{${a}} = ${tanA.toFixed(4)} \\]</p>`;
-      resultado += `<p>\\[ \\cot(A) = \\frac{${a}}{${b}} = ${cotA.toFixed(4)} \\]</p>`;
-      resultado += `<p>\\[ \\sec(A) = \\frac{${c}}{${a}} = ${secA.toFixed(4)} \\]</p>`;
-      resultado += `<p>\\[ \\csc(A) = \\frac{${c}}{${b}} = ${cscA.toFixed(4)} \\]</p>`;
+      resultado += `<h3>📐 Razones trigonométricas para el ángulo C:</h3>`;
+      resultado += `<p>\
+
+\[ \\sin(C) = \\frac{${b}}{${c}} = ${sinC.toFixed(4)} \\]
+
+</p>`;
+      resultado += `<p>\
+
+\[ \\cos(C) = \\frac{${a}}{${c}} = ${cosC.toFixed(4)} \\]
+
+</p>`;
+      resultado += `<p>\
+
+\[ \\tan(C) = \\frac{${b}}{${a}} = ${tanC.toFixed(4)} \\]
+
+</p>`;
+      resultado += `<p>\
+
+\[ \\cot(C) = \\frac{${a}}{${b}} = ${cotC.toFixed(4)} \\]
+
+</p>`;
+      resultado += `<p>\
+
+\[ \\sec(C) = \\frac{${c}}{${a}} = ${secC.toFixed(4)} \\]
+
+</p>`;
+      resultado += `<p>\
+
+\[ \\csc(C) = \\frac{${c}}{${b}} = ${cscC.toFixed(4)} \\]
+
+</p>`;
 
       resultado += `<h3>✅ Resultados ritualizados:</h3>`;
       resultado += `<ul>`;
       resultado += `<li>Cateto a = ${a.toFixed(2)}</li>`;
       resultado += `<li>Cateto b = ${b.toFixed(2)}</li>`;
       resultado += `<li>Hipotenusa c = ${c.toFixed(2)}</li>`;
-      resultado += `<li>Ángulo A ≈ ${angleA.toFixed(2)}°</li>`;
+      resultado += `<li>Ángulo C ≈ ${angleC.toFixed(2)}°</li>`;
       resultado += `<li>Ángulo B ≈ ${angleB.toFixed(2)}°</li>`;
-      resultado += `<li>Ángulo C = 90°</li>`;
+      resultado += `<li>Ángulo A = 90°</li>`;
       resultado += `</ul>`;
 
       document.getElementById("resultado").innerHTML = resultado;
       MathJax.typeset();
 
-      // Dibujo del triángulo rectángulo
       const canvas = document.getElementById("triangulo");
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const escala = 20;
-      const Ax = 100, Ay = 500;
-      const Bx = Ax, By = Ay - b * escala;
-      const Cx = Ax + a * escala, Cy = Ay;
+      const Cx = 100, Cy = 500;
+      const Bx = Cx, By = Cy - b * escala;
+      const Ax = Cx + a * escala, Ay = Cy;
 
       ctx.beginPath();
-      ctx.moveTo(Ax, Ay); // A
+      ctx.moveTo(Cx, Cy); // C
       ctx.lineTo(Bx, By); // B
-      ctx.lineTo(Cx, Cy); // C
+      ctx.lineTo(Ax, Ay); // A
       ctx.closePath();
       ctx.stroke();
 
-      // Vértices
-      ctx.fillText("A", Ax - 10, Ay + 10);
+      ctx.fillText("C", Cx - 10, Cy + 10);
       ctx.fillText("B", Bx - 10, By - 10);
-      ctx.fillText("C", Cx + 10, Cy + 10);
+      ctx.fillText("A", Ax + 10, Ay + 10);
 
-      // Lados con valores
-      ctx.fillText(`a = ${a.toFixed(2)}`, (Ax + Cx)/2, Ay + 15); // base
-      ctx.fillText(`b = ${b.toFixed(2)}`, Ax - 40, (Ay + By)/2); // altura
-      ctx.fillText(`c = ${c.toFixed(2)}`, (Cx + Bx)/2, (Cy + By)/2); // hipotenusa
+      ctx.fillText(`a = ${a.toFixed(2)}`, (Cx + Ax)/2, Cy + 15);
+      ctx.fillText(`b = ${b.toFixed(2)}`, Cx - 40, (Cy + By)/2);
+      ctx.fillText(`c = ${c.toFixed(2)}`, (Ax + Bx)/2, (Ay + By)/2);
 
-      // Ángulos
-      ctx.fillText(`∠A ≈ ${angleA.toFixed(1)}°`, Ax + 5, Ay - 5);
+      ctx.fillText(`∠C ≈ ${angleC.toFixed(1)}°`, Cx + 5, Cy - 5);
       ctx.fillText(`∠B ≈ ${angleB.toFixed(1)}°`, Bx + 5, By + 5);
-      ctx.fillText(`∠C = 90°`, Cx - 30, Cy - 10);
+      ctx.fillText(`∠A = 90°`, Ax - 30, Ay - 10);
     }
   </script>
+
   <div style="margin-top: 40px; text-align: center;">
-  <button onclick="window.location.href='principal.html'" style="padding: 10px 20px; background-color: #4e342e; color: white; border: none; border-radius: 5px; font-size: 16px;">
-    🚪 Salir del sistema
-  </button>
-</div>
-
+    <button onclick="window.location.href='principal.html'" style="padding: 10px 20px; background-color: #4e342e; color: white; border: none; border-radius: 5px; font-size: 16px;">
+      🚪 Salir del sistema
+    </button>
+  </div>
 </body>
-
 </html>
