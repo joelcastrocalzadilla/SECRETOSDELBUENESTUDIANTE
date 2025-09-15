@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Identidades Trigonométricas Ritualizadas</title>
+  <title>Ceremonia de Identidades Trigonométricas</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #222; }
     canvas { border: 1px solid #000; margin-top: 20px; background: #fff; }
@@ -17,12 +17,11 @@
 </head>
 <body>
   <h2>📐 Ceremonia de Identidades Trigonométricas</h2>
-  <p>Ingresa al menos dos lados del triángulo rectángulo. En esta rutina, <b>∠C = 90°</b> por diseño.</p>
+  <p>Ingresa los lados del triángulo rectángulo. En esta ceremonia, <b>∠C = 90°</b> por diseño.</p>
 
-  <label>Cateto a (base): <input type="number" id="a" step="any" placeholder="ej. 8"></label>
-  <label>Cateto b (altura): <input type="number" id="b" step="any" placeholder="ej. 6"></label>
-  <label>Hipotenusa c: <input type="number" id="c" step="any" placeholder="ej. 10"></label>
-  <button onclick="resolver()">Calcular razones</button>
+  <label>Cateto a (base): <input type="number" id="a" value="10" step="any"></label>
+  <label>Cateto b (altura): <input type="number" id="b" value="8" step="any"></label>
+  <button onclick="resolver()">Calcular ahora</button>
 
   <div id="resultado" style="margin-top:20px;"></div>
   <canvas id="triangulo" width="800" height="600"></canvas>
@@ -31,57 +30,9 @@
     function resolver() {
       const a = parseFloat(document.getElementById("a").value);
       const b = parseFloat(document.getElementById("b").value);
-      let c = parseFloat(document.getElementById("c").value);
-      let resultado = "";
-
-      if (a && b && !c) {
-        c = Math.sqrt(a*a + b*b);
-        resultado += `<h3>📐 Cálculo de la hipotenusa</h3>`;
-        resultado += `<p>\
-
-\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = ${c.toFixed(2)} \\]
-
-</p>`;
-      } else if (c && b && !a) {
-        if (c <= b) {
-          resultado += `<p>⚠️ La hipotenusa debe ser mayor que el cateto.</p>`;
-          document.getElementById("resultado").innerHTML = resultado;
-          MathJax.typeset();
-          return;
-        }
-        a = Math.sqrt(c*c - b*b);
-        resultado += `<h3>📐 Cálculo del cateto a</h3>`;
-        resultado += `<p>\
-
-\[ a = \\sqrt{c^2 - b^2} = \\sqrt{${c}^2 - ${b}^2} = ${a.toFixed(2)} \\]
-
-</p>`;
-      } else if (c && a && !b) {
-        if (c <= a) {
-          resultado += `<p>⚠️ La hipotenusa debe ser mayor que el cateto.</p>`;
-          document.getElementById("resultado").innerHTML = resultado;
-          MathJax.typeset();
-          return;
-        }
-        b = Math.sqrt(c*c - a*a);
-        resultado += `<h3>📐 Cálculo del cateto b</h3>`;
-        resultado += `<p>\
-
-\[ b = \\sqrt{c^2 - a^2} = \\sqrt{${c}^2 - ${a}^2} = ${b.toFixed(2)} \\]
-
-</p>`;
-      }
-
-      if (!(a && b && c)) {
-        resultado += `<p>⚠️ Ingresa al menos dos lados válidos.</p>`;
-        document.getElementById("resultado").innerHTML = resultado;
-        MathJax.typeset();
-        return;
-      }
-
+      const c = Math.sqrt(a*a + b*b);
       const angleB = Math.atan(b / a) * 180 / Math.PI;
       const angleA = 90 - angleB;
-      const angleC = 90;
 
       const sinB = b / c;
       const cosB = a / c;
@@ -90,46 +41,53 @@
       const secB = c / a;
       const cscB = c / b;
 
+      let resultado = `<h3>📐 Cálculo de la hipotenusa</h3>`;
+      resultado += `<p>\
+
+\[ c = \\sqrt{a^2 + b^2} = \\sqrt{${a}^2 + ${b}^2} = \\sqrt{${(a*a).toFixed(0)} + ${(b*b).toFixed(0)}} = \\sqrt{${(a*a + b*b).toFixed(0)}} = ${c.toFixed(2)} \\]
+
+</p>`;
+
       resultado += `<h3>📐 Razones trigonométricas para el ángulo B</h3>`;
       resultado += `<p>\
 
-\[ \\sin(B) = \\frac{${b.toFixed(4)}}{${c.toFixed(4)}} = ${sinB.toFixed(5)} \\]
+\[ \\sin(B) = \\frac{${b}}{${c.toFixed(4)}} = ${sinB.toFixed(5)} \\]
 
 </p>`;
       resultado += `<p>\
 
-\[ \\cos(B) = \\frac{${a.toFixed(4)}}{${c.toFixed(4)}} = ${cosB.toFixed(5)} \\]
+\[ \\cos(B) = \\frac{${a}}{${c.toFixed(4)}} = ${cosB.toFixed(5)} \\]
 
 </p>`;
       resultado += `<p>\
 
-\[ \\tan(B) = \\frac{${b.toFixed(4)}}{${a.toFixed(4)}} = ${tanB.toFixed(5)} \\]
+\[ \\tan(B) = \\frac{${b}}{${a}} = ${tanB.toFixed(5)} \\]
 
 </p>`;
       resultado += `<p>\
 
-\[ \\cot(B) = \\frac{${a.toFixed(4)}}{${b.toFixed(4)}} = ${cotB.toFixed(5)} \\]
+\[ \\cot(B) = \\frac{${a}}{${b}} = ${cotB.toFixed(5)} \\]
 
 </p>`;
       resultado += `<p>\
 
-\[ \\sec(B) = \\frac{${c.toFixed(4)}}{${a.toFixed(4)}} = ${secB.toFixed(5)} \\]
+\[ \\sec(B) = \\frac{${c.toFixed(4)}}{${a}} = ${secB.toFixed(5)} \\]
 
 </p>`;
       resultado += `<p>\
 
-\[ \\csc(B) = \\frac{${c.toFixed(4)}}{${b.toFixed(4)}} = ${cscB.toFixed(5)} \\]
+\[ \\csc(B) = \\frac{${c.toFixed(4)}}{${b}} = ${cscB.toFixed(5)} \\]
 
 </p>`;
 
       resultado += `<h3>✅ Resultados ritualizados</h3>`;
       resultado += `<ul>`;
-      resultado += `<li>Cateto a = ${a.toFixed(2)}</li>`;
-      resultado += `<li>Cateto b = ${b.toFixed(2)}</li>`;
-      resultado += `<li>Hipotenusa c = ${c.toFixed(2)}</li>`;
+      resultado += `<li>Cateto a = ${a}</li>`;
+      resultado += `<li>Cateto b = ${b}</li>`;
+      resultado += `<li>Hipotenusa = ${c.toFixed(2)}</li>`;
       resultado += `<li>Ángulo C = 90°</li>`;
-      resultado += `<li>Ángulo B ≈ ${angleB.toFixed(2)}°</li>`;
-      resultado += `<li>Ángulo A ≈ ${angleA.toFixed(2)}°</li>`;
+      resultado += `<li>Ángulo B ≈ ${angleB.toFixed(3)}°</li>`;
+      resultado += `<li>Ángulo A ≈ ${angleA.toFixed(3)}°</li>`;
       resultado += `</ul>`;
 
       document.getElementById("resultado").innerHTML = resultado;
@@ -155,8 +113,8 @@
       ctx.fillText("B", Bx + 8, By + 12);
       ctx.fillText("A", Ax - 12, Ay - 8);
 
-      ctx.fillText(`a = ${a.toFixed(2)}`, (Cx + Bx)/2, By + 16);
-      ctx.fillText(`b = ${b.toFixed(2)}`, Cx - 42, (Cy + Ay)/2);
+      ctx.fillText(`a = ${a}`, (Cx + Bx)/2, By + 16);
+      ctx.fillText(`b = ${b}`, Cx - 42, (Cy + Ay)/2);
       ctx.fillText(`c = ${c.toFixed(2)}`, (Bx + Ax)/2 - 20, (By + Ay)/2);
 
       ctx.fillText(`∠C = 90°`, Cx + 6, Cy - 6);
