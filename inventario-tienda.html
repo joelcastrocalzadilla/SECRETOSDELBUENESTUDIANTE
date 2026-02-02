@@ -1,121 +1,145 @@
-<h1>📦 Inventario Tienda de Barrio</h1>
-<button onclick="agregarProducto()">➕ Agregar fila vacía</button>
-<br><br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inventario Tienda de Barrio</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f9f9; padding: 20px; }
+    h1 { color: #d35400; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #ffe082; }
+    input { width: 100%; border: none; text-align: center; background: #e3f2fd; }
+    .resumen { background: #fff9c4; padding: 15px; border-radius: 8px; }
+    button { padding: 8px 12px; margin: 5px; background: #42a5f5; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #1e88e5; }
+    #lector { border: 2px solid #42a5f5; border-radius: 8px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>📦 Inventario Tienda de Barrio</h1>
+  <button onclick="agregarProducto()">➕ Agregar fila vacía</button>
+  <br><br>
 
-<!-- Selector de movimiento -->
-<label for="tipoMovimiento">Tipo de movimiento:</label>
-<select id="tipoMovimiento">
-  <option value="compra">Compra (entrada)</option>
-  <option value="venta">Venta (salida)</option>
-</select>
-<br><br>
+  <!-- Selector de movimiento -->
+  <label for="tipoMovimiento">Tipo de movimiento:</label>
+  <select id="tipoMovimiento">
+    <option value="compra">Compra (entrada)</option>
+    <option value="venta">Venta (salida)</option>
+  </select>
+  <br><br>
 
-<!-- Cámara para escanear -->
-<div id="lector" style="width:400px;"></div>
-<p>Código detectado: <span id="codigo"></span></p>
+  <!-- Cámara para escanear -->
+  <div id="lector" style="width:400px; height:300px;"></div>
+  <p>Código detectado: <span id="codigo"></span></p>
 
-<!-- Tabla de inventario -->
-<table id="tablaInventario" style="width:100%; border-collapse: collapse; margin-bottom:20px;">
-  <thead>
-    <tr style="background:#ffe082;">
-      <th style="border:1px solid #ccc; padding:8px;">Código</th>
-      <th style="border:1px solid #ccc; padding:8px;">Producto</th>
-      <th style="border:1px solid #ccc; padding:8px;">Precio unitario</th>
-      <th style="border:1px solid #ccc; padding:8px;">Cantidad</th>
-      <th style="border:1px solid #ccc; padding:8px;">Total</th>
-      <th style="border:1px solid #ccc; padding:8px;">Acciones</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <!-- Tabla de inventario -->
+  <table id="tablaInventario">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Producto</th>
+        <th>Precio unitario</th>
+        <th>Cantidad</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-<div style="background:#fff9c4; padding:15px; border-radius:8px;">
-  <p>Valor total del inventario: <span id="valorInventario">0</span></p>
-</div>
+  <div class="resumen">
+    <p>Valor total del inventario: <span id="valorInventario">0</span></p>
+  </div>
 
-<!-- Librería html5-qrcode -->
-<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-<script>
-  const tbody = document.querySelector("#tablaInventario tbody");
+  <!-- Librería html5-qrcode -->
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <script>
+    const tbody = document.querySelector("#tablaInventario tbody");
 
-  // Crear fila vacía
-  function agregarProducto(codigo="", nombre="Nuevo producto", precio=0, cantidad=0) {
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td contenteditable="true" style="border:1px solid #ccc; padding:8px;">${codigo}</td>
-      <td contenteditable="true" style="border:1px solid #ccc; padding:8px;">${nombre}</td>
-      <td style="border:1px solid #ccc; padding:8px;"><input type="number" value="${precio}" min="0" style="width:100%; border:none; text-align:center; background:#e3f2fd;"></td>
-      <td style="border:1px solid #ccc; padding:8px;"><input type="number" value="${cantidad}" min="0" style="width:100%; border:none; text-align:center; background:#e3f2fd;"></td>
-      <td class="total" style="border:1px solid #ccc; padding:8px;">0</td>
-      <td style="border:1px solid #ccc; padding:8px;"><button onclick="eliminarProducto(this)" style="padding:5px 10px; background:#42a5f5; color:white; border:none; border-radius:5px;">🗑</button></td>
-    `;
-    tbody.appendChild(fila);
-    actualizarInventario();
-  }
-
-  // Eliminar fila
-  function eliminarProducto(btn) {
-    btn.closest("tr").remove();
-    actualizarInventario();
-  }
-
-  // Actualizar totales
-  function actualizarInventario() {
-    let valorInventario = 0;
-    const filas = tbody.querySelectorAll("tr");
-    filas.forEach(fila => {
-      const precio = parseFloat(fila.children[2].querySelector("input").value) || 0;
-      const cantidad = parseFloat(fila.children[3].querySelector("input").value) || 0;
-      const total = precio * cantidad;
-      fila.children[4].textContent = total.toLocaleString("es-CO");
-      valorInventario += total;
-    });
-    document.getElementById("valorInventario").textContent = valorInventario.toLocaleString("es-CO");
-  }
-
-  tbody.addEventListener("input", actualizarInventario);
-
-  // Configuración del lector con html5-qrcode
-  function onScanSuccess(decodedText, decodedResult) {
-    document.getElementById("codigo").textContent = decodedText;
-
-    // Buscar si el producto ya existe en la tabla
-    let productoExistente = null;
-    const filas = tbody.querySelectorAll("tr");
-    filas.forEach(fila => {
-      if (fila.children[0].textContent === decodedText) {
-        productoExistente = fila;
-      }
-    });
-
-    const tipoMovimiento = document.getElementById("tipoMovimiento").value;
-
-    if (productoExistente) {
-      // Actualizar stock según movimiento
-      let cantidadActual = parseFloat(productoExistente.children[3].querySelector("input").value) || 0;
-      if (tipoMovimiento === "compra") {
-        cantidadActual += 1; // entrada
-      } else if (tipoMovimiento === "venta") {
-        cantidadActual = Math.max(0, cantidadActual - 1); // salida
-      }
-      productoExistente.children[3].querySelector("input").value = cantidadActual;
-    } else {
-      // Si no existe, crear nuevo producto
-      agregarProducto(decodedText, "Producto escaneado", 0, tipoMovimiento === "compra" ? 1 : 0);
+    // Crear fila vacía
+    function agregarProducto(codigo="", nombre="Nuevo producto", precio=0, cantidad=0) {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td contenteditable="true">${codigo}</td>
+        <td contenteditable="true">${nombre}</td>
+        <td><input type="number" value="${precio}" min="0"></td>
+        <td><input type="number" value="${cantidad}" min="0"></td>
+        <td class="total">0</td>
+        <td><button onclick="eliminarProducto(this)">🗑 Eliminar</button></td>
+      `;
+      tbody.appendChild(fila);
+      actualizarInventario();
     }
 
-    actualizarInventario();
-  }
+    // Eliminar fila
+    function eliminarProducto(btn) {
+      btn.closest("tr").remove();
+      actualizarInventario();
+    }
 
-  function onScanFailure(error) {
-    // No hacemos nada si falla un intento de lectura
-  }
+    // Actualizar totales
+    function actualizarInventario() {
+      let valorInventario = 0;
+      const filas = tbody.querySelectorAll("tr");
+      filas.forEach(fila => {
+        const precio = parseFloat(fila.children[2].querySelector("input").value) || 0;
+        const cantidad = parseFloat(fila.children[3].querySelector("input").value) || 0;
+        const total = precio * cantidad;
+        fila.children[4].textContent = total.toLocaleString("es-CO");
+        valorInventario += total;
+      });
+      document.getElementById("valorInventario").textContent = valorInventario.toLocaleString("es-CO");
+    }
 
-  let html5QrCode = new Html5Qrcode("lector");
-  html5QrCode.start(
-    { facingMode: "environment" }, // cámara trasera
-    { fps: 10, qrbox: 250 },
-    onScanSuccess,
-    onScanFailure
-  );
-</script>
+    tbody.addEventListener("input", actualizarInventario);
+
+    // Configuración del lector con html5-qrcode
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById("codigo").textContent = decodedText;
+
+      // Buscar si el producto ya existe en la tabla
+      let productoExistente = null;
+      const filas = tbody.querySelectorAll("tr");
+      filas.forEach(fila => {
+        if (fila.children[0].textContent === decodedText) {
+          productoExistente = fila;
+        }
+      });
+
+      const tipoMovimiento = document.getElementById("tipoMovimiento").value;
+
+      if (productoExistente) {
+        // Actualizar stock según movimiento
+        let cantidadActual = parseFloat(productoExistente.children[3].querySelector("input").value) || 0;
+        if (tipoMovimiento === "compra") {
+          cantidadActual += 1; // entrada
+        } else if (tipoMovimiento === "venta") {
+          cantidadActual = Math.max(0, cantidadActual - 1); // salida
+        }
+        productoExistente.children[3].querySelector("input").value = cantidadActual;
+      } else {
+        // Si no existe, crear nuevo producto
+        agregarProducto(decodedText, "Producto escaneado", 0, tipoMovimiento === "compra" ? 1 : 0);
+      }
+
+      actualizarInventario();
+    }
+
+    function onScanFailure(error) {
+      // No hacemos nada si falla un intento de lectura
+    }
+
+    // Iniciar cámara
+    const html5QrCode = new Html5Qrcode("lector");
+    html5QrCode.start(
+      { facingMode: "environment" }, // cámara trasera
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onScanSuccess,
+      onScanFailure
+    ).catch(err => {
+      console.error("Error al iniciar cámara:", err);
+    });
+  </script>
+</body>
+</html>
